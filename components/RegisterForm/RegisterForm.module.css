@@ -1,0 +1,136 @@
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+/* Обгортка для інпута (сірий фон) */
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  background-color: var(--color-gray-dark, #262626);
+  border-radius: 12px;
+  padding: 16px 18px;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+  border: 1px solid transparent;
+}
+
+/* Підсвічування рамки, коли користувач клікає на поле */
+.inputWrapper:focus-within {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Стан помилки (червона рамка) */
+.inputWrapperError {
+  border-color: #e74a3b !important;
+}
+
+/* Текст "Name:", "Mail:", "Password:" */
+.label {
+  color: var(--color-gray, #686868);
+  margin-right: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Сам інпут */
+.input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--color-white, #f9f9f9);
+  font-size: 16px;
+  font-weight: 500;
+  outline: none;
+  width: 100%;
+}
+
+.input::placeholder {
+  color: var(--color-white, #f9f9f9);
+  opacity: 1;
+}
+
+/* 🌟 ФІКС ДЛЯ CHROME: Прибираємо білий фон при автозаповненні паролів */
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus,
+.input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #262626 inset !important;
+  -webkit-text-fill-color: white !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Кнопка "Око" */
+.iconButton {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--color-white, #f9f9f9);
+  transition: opacity 0.2s ease;
+}
+
+.iconButton:hover {
+  opacity: 0.7;
+}
+
+.iconButton svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Текст помилки під полем */
+.errorText {
+  color: #e74a3b;
+  font-size: 12px;
+  line-height: 1.2;
+  margin-top: -6px;
+  padding-left: 18px;
+}
+
+/* Кнопка Submit (Registration / Log in) */
+.submitBtn {
+  margin-top: 16px;
+  width: 100%;
+  padding: 16px;
+  border-radius: 30px;
+  background-color: var(--color-white, #f9f9f9);
+  color: var(--color-black, #141414);
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+}
+
+.submitBtn:hover:not(:disabled) {
+  background-color: #e0e0e0;
+}
+
+.submitBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Обгортка для посилання внизу */
+.linkWrapper {
+  text-align: center;
+  margin-top: 14px;
+}
+
+.linkWrapper a {
+  color: var(--color-gray, #686868);
+  font-size: 14px;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+.linkWrapper a:hover {
+  color: var(--color-white, #f9f9f9);
+}

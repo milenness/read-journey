@@ -1,162 +1,133 @@
-/* --- Контейнери --- */
-.header {
-  padding: 16px 0;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 100;
-  background-color: var(--color-scheme-2-background);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.wrapper {
+.formContainer {
   display: flex;
+  flex-direction: column;
 }
 
-.content {
+.inputWrapper {
   display: flex;
   align-items: center;
-}
-
-.rightGroup {
-  display: contents;
-}
-
-/* --- Лого --- */
-.logo {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  width: 124px;
-  height: 40px;
-  color: var(--color-scheme-2-text);
-}
-
-.logo img {
-  transition: filter 0.4s ease;
-}
-
-:global(.dark) .logo img {
-  filter: invert(1) brightness(2);
-}
-
-.logo span {
-  font-weight: 500;
-  font-size: 17px;
-  line-height: 1;
-  letter-spacing: -0.01em;
-}
-
-/* --- Навігація --- */
-.nav {
-  display: none;
-}
-
-.navLink {
-  font-size: 18px;
-  color: var(--color-scheme-2-text);
-  white-space: nowrap;
-  padding: 0 8px;
-  border-radius: 6px;
-  border: 1px solid transparent;
+  margin-bottom: 8px;
+  background-color: var(--color-gray-dark);
+  border-radius: 12px;
+  padding: 14px;
   transition: border-color var(--main-transition), background-color var(--main-transition);
+  border: 1px solid transparent;
 }
 
-.navLink:hover,
-.navLink:focus {
-  border-color: 1px solid var(--color-scheme-1-text);
+.inputWrapper:focus-within,
+.inputWrapper:hover {
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
-.navLink:focus-visible,
-.navLink:active {
-  background-color: var(--color-neutral-lighter);
+.inputWrapperError {
+  border-color: #e74a3b !important;
 }
 
-/* --- Кнопки та дії --- */
-.actions {
-  display: none;
-  align-items: center;
+/* Текст "Name:", "Mail:", "Password:" */
+.label {
+  color: var(--color-gray, #686868);
+  margin-right: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  white-space: nowrap;
 }
 
-.desktopUserActions {
-  display: none;
-  align-items: center;
-}
-
-.publishButton {
-  display: none;
-  transition: background-color var(--main-transition), color var(--main-transition), border-color var(--main-transition);
-}
-
-.publishButton:hover,
-.publishButton:focus {
-  background: var(--color-mantis-lighter);
-  border-color: var(--color-mantis-dark);
-  color: var(--color-scheme-2-text);
+/* Сам інпут */
+.input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--color-white, #f9f9f9);
+  font-size: 16px;
+  font-weight: 500;
   outline: none;
+  width: 100%;
 }
 
-.publishButton:active {
-  background-color: var(--color-mantis-dark);
-  border-color: var(--color-mantis-dark);
-  color: var(--color-white);
+.input::placeholder {
+  color: var(--color-white, #f9f9f9);
+  opacity: 1;
 }
 
-.burgerButton {
-  display: inline-flex;
+/* 🌟 ФІКС ДЛЯ CHROME: Прибираємо білий фон при автозаповненні паролів */
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus,
+.input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #262626 inset !important;
+  -webkit-text-fill-color: white !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Кнопка "Око" */
+.iconButton {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-left: 8px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-scheme-2-text);
-  padding: 4px;
-  border-radius: 6px;
-  border: 1px solid var(--color-scheme-2-border);
-  background: var(--opacity-neutral-darkest-5);
+  cursor: pointer;
+  color: var(--color-white, #f9f9f9);
+  transition: opacity 0.2s ease;
 }
 
-/* ===== ПЛАНШЕТ (≥768px) ===== */
-@media only screen and (min-width: 768px) {
-  .actions {
-    display: flex;
-  }
-
-  .publishButton {
-    display: inline-flex;
-    justify-content: center;
-    font-weight: 500;
-    font-size: 16px;
-    color: var(--color-white);
-    background: var(--color-mantis-dark);
-    border: 1px solid var(--color-mantis-dark);
-    border-radius: 6px;
-    padding: 4px 10px;
-    margin-right: 16px;
-  }
-
-  .burgerButton {
-    margin-left: 16px;
-  }
+.iconButton:hover {
+  opacity: 0.7;
 }
 
-/* ===== ДЕСКТОП (≥1440px) ===== */
-@media only screen and (min-width: 1440px) {
-  .rightGroup {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-  }
+.iconButton svg {
+  width: 20px;
+  height: 20px;
+}
 
-  .nav {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
+/* Текст помилки під полем */
+.errorText {
+  color: #e74a3b;
+  font-size: 12px;
+  line-height: 1.2;
+  margin-top: -6px;
+  padding-left: 18px;
+}
 
-  .desktopUserActions {
-    display: flex;
-  }
+/* Кнопка Submit (Registration / Log in) */
+.submitBtn {
+  margin-top: 16px;
+  width: 100%;
+  padding: 16px;
+  border-radius: 30px;
+  background-color: var(--color-white, #f9f9f9);
+  color: var(--color-black, #141414);
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+}
 
-  .burgerButton {
-    display: none;
-  }
+.submitBtn:hover:not(:disabled) {
+  background-color: #e0e0e0;
+}
+
+.submitBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Обгортка для посилання внизу */
+.linkWrapper {
+  text-align: center;
+  margin-top: 14px;
+}
+
+.linkWrapper a {
+  color: var(--color-gray, #686868);
+  font-size: 14px;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+.linkWrapper a:hover {
+  color: var(--color-white, #f9f9f9);
 }

@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 
+// 1. Імпортуємо наш створений провайдер
+import QueryProvider from "@/components/QueryProvider";
+
 const gilroy = localFont({
   src: [
     {
@@ -65,7 +68,7 @@ export default function RootLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <body className={`${gilroy.variable} ${sfProText.variable}`}>
-        {children}
+        <QueryProvider>{children}</QueryProvider>
       </body>
     </html>
   );
