@@ -1,0 +1,162 @@
+/* --- Контейнери --- */
+.header {
+  padding: 16px 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  background-color: var(--color-scheme-2-background);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.wrapper {
+  display: flex;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+}
+
+.rightGroup {
+  display: contents;
+}
+
+/* --- Лого --- */
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 124px;
+  height: 40px;
+  color: var(--color-scheme-2-text);
+}
+
+.logo img {
+  transition: filter 0.4s ease;
+}
+
+:global(.dark) .logo img {
+  filter: invert(1) brightness(2);
+}
+
+.logo span {
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+/* --- Навігація --- */
+.nav {
+  display: none;
+}
+
+.navLink {
+  font-size: 18px;
+  color: var(--color-scheme-2-text);
+  white-space: nowrap;
+  padding: 0 8px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  transition: border-color var(--main-transition), background-color var(--main-transition);
+}
+
+.navLink:hover,
+.navLink:focus {
+  border-color: 1px solid var(--color-scheme-1-text);
+}
+
+.navLink:focus-visible,
+.navLink:active {
+  background-color: var(--color-neutral-lighter);
+}
+
+/* --- Кнопки та дії --- */
+.actions {
+  display: none;
+  align-items: center;
+}
+
+.desktopUserActions {
+  display: none;
+  align-items: center;
+}
+
+.publishButton {
+  display: none;
+  transition: background-color var(--main-transition), color var(--main-transition), border-color var(--main-transition);
+}
+
+.publishButton:hover,
+.publishButton:focus {
+  background: var(--color-mantis-lighter);
+  border-color: var(--color-mantis-dark);
+  color: var(--color-scheme-2-text);
+  outline: none;
+}
+
+.publishButton:active {
+  background-color: var(--color-mantis-dark);
+  border-color: var(--color-mantis-dark);
+  color: var(--color-white);
+}
+
+.burgerButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-scheme-2-text);
+  padding: 4px;
+  border-radius: 6px;
+  border: 1px solid var(--color-scheme-2-border);
+  background: var(--opacity-neutral-darkest-5);
+}
+
+/* ===== ПЛАНШЕТ (≥768px) ===== */
+@media only screen and (min-width: 768px) {
+  .actions {
+    display: flex;
+  }
+
+  .publishButton {
+    display: inline-flex;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--color-white);
+    background: var(--color-mantis-dark);
+    border: 1px solid var(--color-mantis-dark);
+    border-radius: 6px;
+    padding: 4px 10px;
+    margin-right: 16px;
+  }
+
+  .burgerButton {
+    margin-left: 16px;
+  }
+}
+
+/* ===== ДЕСКТОП (≥1440px) ===== */
+@media only screen and (min-width: 1440px) {
+  .rightGroup {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .desktopUserActions {
+    display: flex;
+  }
+
+  .burgerButton {
+    display: none;
+  }
+}

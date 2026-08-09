@@ -1,0 +1,35 @@
+.screenBlock {
+  padding-top: 20px;
+  display: flex;
+  justify-content: center;
+  border-radius: 30px;
+  background-color: var(--color-black-light);
+  width: 100%;
+}
+
+.deskImage {
+  display: none;
+}
+
+@media only screen and (min-width: 768px) {
+  .screenBlock {
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 1440px) {
+  .screenBlock {
+    display: flex;
+    padding-top: 80px;
+    width: auto;
+    max-width: 600px;
+  }
+
+  .telImage {
+    display: none;
+  }
+
+  .deskImage {
+    display: block;
+  }
+}

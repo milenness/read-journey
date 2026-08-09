@@ -1,0 +1,96 @@
+@import "modern-normalize/modern-normalize.css";
+
+:root {
+  --color-white: #F9F9F9;
+  --color-gray-transparent: rgba(227, 227, 227, 0.3);
+  
+  --color-gray: #686868;
+  --color-gray-dark: #262626;
+  --color-black-light: #1F1F1F;
+  --color-black: #141414;
+
+  --color-blue: #4F92F7;
+  --color-green: #30B94D;
+  --color-red: #e90516;
+
+  --main-transition: 333ms ease-in-out;
+
+  --font-family: "Gilroy", sans-serif;
+  --second-family: "SF Pro Text", sans-serif;
+}
+
+body {
+  font-family: var(--font-family);
+font-weight: 500;
+font-size: 14px;
+line-height: 1.29;
+letter-spacing: -0.02em;
+color: var(--color-white);
+  overflow-x: hidden;
+  background-color: var(--color-black);
+}
+
+main {
+  position: relative;
+  overflow: hidden;
+}
+
+h1,
+h2,
+h3{
+    font-weight: 700;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+ul, ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: currentColor;
+  text-decoration: none;
+  outline: none;
+}
+
+button {
+ cursor: pointer;
+ border: none;
+ outline: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.container {
+  min-width: 320px;
+  max-width: 375px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+@media only screen and (min-width: 768px) {
+  .container {
+    max-width: 768px;
+    padding: 0 32px;
+  }
+}
+
+@media only screen and (min-width: 1440px) {
+  .container {
+    max-width: 1440px;
+  }
+}

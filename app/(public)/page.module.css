@@ -1,0 +1,70 @@
+.layoutWrapper {
+    margin: 20px 0;
+}
+
+@media only screen and (min-width: 768px) {
+ .layoutWrapper {
+      margin: 32px 0;
+}
+}
+
+.blocksWrapper {
+ display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+@media only screen and (min-width: 1440px) {
+ .blocksWrapper {
+    flex-direction: row;
+    gap: 16px;
+}
+}
+
+.authBlock {
+    padding: 20px 20px 40px 20px;
+    max-width: 335px;
+    border-radius: 30px;
+background-color: var(--color-black-light);
+}
+
+@media only screen and (min-width: 768px) {
+ .authBlock {
+    padding: 40px 168px 214px 64px;
+    max-width: 704px;
+}
+}
+
+@media only screen and (min-width: 1440px) {
+ .authBlock {
+    padding: 40px 64px;
+    max-width: 600px;
+}
+}
+
+.title {
+    font-size: 32px;
+line-height: 1;
+margin-bottom: 20px;
+margin-top:40px;
+}
+
+.accent {
+    color: rgba(227, 227, 227, 0.5);
+}
+
+@media only screen and (min-width: 768px) {
+ .title {
+  font-size: 64px;
+line-height: 0.94;
+max-width: 444px;
+margin-bottom: 40px;
+margin-top:157px;
+}
+}
+
+@media only screen and (min-width: 1440px) {
+ .title {
+margin-top:107px;
+}
+}
