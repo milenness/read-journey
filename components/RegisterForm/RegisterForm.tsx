@@ -8,6 +8,8 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import Link from "next/link";
 import { LuEye, LuEyeOff } from "react-icons/lu";
+import { MdErrorOutline } from "react-icons/md";
+import { RiCheckboxCircleLine } from "react-icons/ri";
 
 import { registerUser, SignUpRequest } from "@/lib/api";
 import { useAuthStore } from "@/store/authStore";
@@ -46,7 +48,7 @@ export default function RegisterForm() {
   const serverError = mutation.isError
     ? (axios.isAxiosError(mutation.error) &&
         mutation.error.response?.data?.error) ||
-      "Щось пішло не так"
+      "Registration failed. Please try again."
     : null;
 
   return (
@@ -55,99 +57,180 @@ export default function RegisterForm() {
       validationSchema={schema}
       onSubmit={(values) => mutation.mutate(values)}
     >
-      {({ touched, errors }) => (
-        <Form className={css.formContainer}>
-          {/* Поле Name */}
-            <div
-              className={`${css.inputWrapper} ${touched.name && errors.name ? css.inputWrapperError : ""}`}
-            >
-              <label htmlFor={nameId} className={css.label}>
-                Name:
-              </label>
-              <Field
-                id={nameId}
-                name="name"
-                type="text"
-                placeholder="Ilona Ratushniak"
-                className={css.input}
-            />
-            <ErrorMessage
-              name="name"
-              component="span"
-              className={css.errorText}
-            />
-            </div>
+      {/* Дістаємо тільки необхідні параметри: touched, errors та values */}
+      {({ touched, errors, values }) => {
+        // Логіка для визначення стану кожного поля
+        const isNameError = touched.name && errors.name;
+        const isNameSuccess =
+          touched.name && !errors.name && values.name.trim() !== "";
 
-          {/* Поле Mail */}
-          <div>
-            <div
-              className={`${css.inputWrapper} ${touched.email && errors.email ? css.inputWrapperError : ""}`}
-            >
-              <label htmlFor={emailId} className={css.label}>
-                Mail:
-              </label>
-              <Field
-                id={emailId}
-                name="email"
-                type="email"
-                placeholder="Your@email.com"
-                className={css.input}
-              />
-            </div>
-            <ErrorMessage
-              name="email"
-              component="span"
-              className={css.errorText}
-            />
-          </div>
+        const isEmailError = touched.email && errors.email;
+        const isEmailSuccess =
+          touched.email && !errors.email && values.email.trim() !== "";
 
-          {/* Поле Password */}
-          <div>
-            <div
-              className={`${css.inputWrapper} ${touched.password && errors.password ? css.inputWrapperError : ""}`}
-            >
-              <label htmlFor={passwordId} className={css.label}>
-                Password:
-              </label>
-              <Field
-                id={passwordId}
-                name="password"
-                type={showPassword ? "text" : "password"}
-                placeholder="Yourpasswordhere"
-                className={css.input}
-              />
-              <button
-                type="button"
-                className={css.iconButton}
-                onClick={() => setShowPassword(!showPassword)}
+        const isPasswordError = touched.password && errors.password;
+        const isPasswordSuccess =
+          touched.password && !errors.password && values.password.trim() !== "";
+
+        return (
+          <Form className={css.formContainer}>
+            {/* Поле Name */}
+            <div className={css.errorWrapper}>
+              <div
+                className={`${css.inputWrapper} ${
+                  isNameError
+                    ? css.inputWrapperError
+                    : isNameSuccess
+                      ? css.inputWrapperSuccess
+                      : ""
+                }`}
               >
-                {showPassword ? <LuEyeOff /> : <LuEye />}
-              </button>
-            </div>
-            <ErrorMessage
-              name="password"
-              component="span"
-              className={css.errorText}
-            />
-          </div>
+                <label htmlFor={nameId} className={css.label}>
+                  Name:
+                </label>
+                <Field
+                  id={nameId}
+                  name="name"
+                  type="text"
+                  placeholder="Ilona Ratushniak"
+                  className={css.input}
+                />
 
-          <div className={css.buttonsWrapper}>
-            <button
-              type="submit"
-              disabled={mutation.isPending}
-              className={css.submitBtn}
-            >
-              {mutation.isPending ? "Loading..." : "Registration"}
-            </button>
-  
-            {serverError && <p className={css.errorText}>{serverError}</p>}
-  
-            <div className="linkWrapper">
-              <Link href="/login">Already have an account?</Link>
+                {/* Іконки статусу */}
+                {isNameError && <MdErrorOutline className={css.errorIcon} />}
+                {isNameSuccess && (
+                  <RiCheckboxCircleLine className={css.successIcon} />
+                )}
+              </div>
+
+              <ErrorMessage
+                name="name"
+                component="span"
+                className={css.errorText}
+              />
+              {isNameSuccess && (
+                <span className={css.successText}>Name is valid</span>
+              )}
             </div>
-          </div>
-        </Form>
-      )}
+
+            {/* Поле Mail */}
+            <div className={css.errorWrapper}>
+              <div
+                className={`${css.inputWrapper} ${
+                  isEmailError
+                    ? css.inputWrapperError
+                    : isEmailSuccess
+                      ? css.inputWrapperSuccess
+                      : ""
+                }`}
+              >
+                <label htmlFor={emailId} className={css.label}>
+                  Mail:
+                </label>
+                <Field
+                  id={emailId}
+                  name="email"
+                  type="email"
+                  placeholder="Your@email.com"
+                  className={css.input}
+                />
+
+                {isEmailError && <MdErrorOutline className={css.errorIcon} />}
+                {isEmailSuccess && (
+                  <RiCheckboxCircleLine className={css.successIcon} />
+                )}
+              </div>
+
+              <ErrorMessage
+                name="email"
+                component="span"
+                className={css.errorText}
+              />
+              {isEmailSuccess && (
+                <span className={css.successText}>Email is correct</span>
+              )}
+            </div>
+
+            {/* Поле Password */}
+            <div className={css.errorWrapper}>
+              <div
+                className={`${css.inputWrapper} ${
+                  isPasswordError
+                    ? css.inputWrapperError
+                    : isPasswordSuccess
+                      ? css.inputWrapperSuccess
+                      : ""
+                }`}
+              >
+                <label htmlFor={passwordId} className={css.label}>
+                  Password:
+                </label>
+                <Field
+                  id={passwordId}
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Yourpasswordhere"
+                  className={css.input}
+                />
+
+                {/* Кнопка Око */}
+                <button
+                  type="button"
+                  className={css.iconButton}
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <LuEyeOff width={18} height={18} />
+                  ) : (
+                    <LuEye width={18} height={18} />
+                  )}
+                </button>
+
+                {/* Іконки статусу для пароля (стоять праворуч від ока) */}
+                {isPasswordError && (
+                  <MdErrorOutline
+                    width={18}
+                    height={18}
+                    className={css.errorIcon}
+                  />
+                )}
+                {isPasswordSuccess && (
+                  <RiCheckboxCircleLine
+                    width={18}
+                    height={18}
+                    className={css.successIcon}
+                  />
+                )}
+              </div>
+
+              <ErrorMessage
+                name="password"
+                component="span"
+                className={css.errorText}
+              />
+              {isPasswordSuccess && (
+                <span className={css.successText}>Password is secure</span>
+              )}
+            </div>
+
+            <div className={css.buttonsWrapper}>
+              <button
+                type="submit"
+                disabled={mutation.isPending}
+                className={css.submitBtn}
+              >
+                {mutation.isPending ? "Loading..." : "Registration"}
+              </button>
+
+              {serverError && <p className={css.errorText}>{serverError}</p>}
+
+              <div className={css.linkWrapper}>
+                <Link href="/login">Already have an account?</Link>
+              </div>
+            </div>
+          </Form>
+        );
+      }}
     </Formik>
   );
 }
