@@ -21,8 +21,7 @@
   .screenBlock {
     display: flex;
     padding-top: 80px;
-    width: auto;
-    max-width: 600px;
+   width: calc(50%);
   }
 
   .telImage {

@@ -12,6 +12,7 @@
  display: flex;
     flex-direction: column;
     gap: 10px;
+    width: 100%;
 }
 
 @media only screen and (min-width: 1440px) {
@@ -23,7 +24,6 @@
 
 .authBlock {
     padding: 20px 20px 40px 20px;
-    max-width: 335px;
     border-radius: 30px;
 background-color: var(--color-black-light);
 }
@@ -31,14 +31,13 @@ background-color: var(--color-black-light);
 @media only screen and (min-width: 768px) {
  .authBlock {
     padding: 40px 168px 214px 64px;
-    max-width: 704px;
 }
 }
 
 @media only screen and (min-width: 1440px) {
  .authBlock {
     padding: 40px 64px;
-    max-width: 600px;
+   width: calc(50%);
 }
 }
 
