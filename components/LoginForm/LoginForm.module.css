@@ -21,15 +21,17 @@
   border: 1px solid transparent;
 }
 
-
 @media only screen and (min-width: 768px) {
   .errorWrapper {
   margin-bottom: 14px;
 }
 
+.errorWrapper:not(:has(~ .errorWrapper)) {
+  margin-bottom: 0; 
+}
+
   .inputWrapper {
   padding: 16px 18px 16px 14px;
-  margin-bottom: 14px;
 }
 }
 
