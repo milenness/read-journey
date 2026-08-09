@@ -32,3 +32,8 @@
     display: block;
   }
 }
+
+.telImage,
+.deskImage {
+  object-fit: contain;
+}

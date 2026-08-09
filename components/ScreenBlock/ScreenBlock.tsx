@@ -15,7 +15,7 @@ export default function ScreenBlock() {
           src="/images/desk.png"
           alt="Desktop interface preview of the application library"
           width={405}
-          height={520}
+          height={656}
           className={css.deskImage}
         />
     </div>
