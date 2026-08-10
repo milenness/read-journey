@@ -40,6 +40,7 @@ flex-direction: column;
  .authBlock {
     padding: 40px 64px;
    width: calc(50%);
+     height: auto;
 }
 }
 

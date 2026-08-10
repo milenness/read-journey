@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
 
     const apiRes = await axios.post<AuthResponse>(
-      `${process.env.API_BASE_URL}/users/login`,
+      `${process.env.API_BASE_URL}/users/signin`,
       body,
     );
 
