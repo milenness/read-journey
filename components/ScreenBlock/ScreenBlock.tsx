@@ -1,23 +1,23 @@
 import css from "./ScreenBlock.module.css";
 import Image from "next/image";
+import telImage from "@/public/images/tel.png";
+import deskImage from "@/public/images/desk.png";
 
 export default function ScreenBlock() {
   return (
     <div className={css.screenBlock}>
-        <Image
-          src="/images/tel.png"
-          alt="Smartphone mockup displaying the mobile application interface with recommended books"
-          width={255}
-          height={315}
-          className={css.telImage}
-        />
-        <Image
-          src="/images/desk.png"
-          alt="Desktop interface preview of the application library"
-          width={405}
-          height={656}
-          className={css.deskImage}
-        />
+      <Image
+        src={telImage}
+        alt="Smartphone mockup displaying the mobile application interface with recommended books"
+        className={css.telImage}
+        loading="eager"
+      />
+      <Image
+        src={deskImage}
+        alt="Desktop interface preview of the application library"
+        className={css.deskImage}
+        loading="eager"
+      />
     </div>
   );
 }

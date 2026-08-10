@@ -1,58 +1,108 @@
 .formContainer {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  width: 100%;
+ flex-grow: 1;
 }
 
-/* Обгортка для інпута (сірий фон) */
+.errorWrapper {
+  margin-bottom: 8px;
+}
+
+.errorWrapper:not(:has(~ .errorWrapper)) {
+  margin-bottom: 0; 
+}
+
 .inputWrapper {
   display: flex;
   align-items: center;
-  background-color: var(--color-gray-dark, #262626);
+  background-color: var(--color-gray-dark);
   border-radius: 12px;
-  padding: 16px 18px;
-  transition: border-color 0.3s ease, background-color 0.3s ease;
+  padding: 13px 15px 13px 13px;
+  transition: border-color var(--main-transition), background-color var(--main-transition);
   border: 1px solid transparent;
 }
 
-/* Підсвічування рамки, коли користувач клікає на поле */
-.inputWrapper:focus-within {
+@media only screen and (min-width: 768px) {
+  .errorWrapper {
+  margin-bottom: 14px;
+}
+
+.errorWrapper:not(:has(~ .errorWrapper)) {
+  margin-bottom: 0; 
+}
+
+  .inputWrapper {
+  padding: 15px 17px 15px 13px;
+}
+}
+
+.inputWrapper:focus-within,
+.inputWrapper:hover {
   border-color: rgba(255, 255, 255, 0.2);
 }
 
-/* Стан помилки (червона рамка) */
-.inputWrapperError {
-  border-color: #e74a3b !important;
+.inputWrapper.inputWrapperError,
+.inputWrapper.inputWrapperError:focus-within,
+.inputWrapper.inputWrapperError:hover {
+  border-color: var(--color-red);
+  margin-bottom: 4px;
 }
 
-/* Текст "Name:", "Mail:", "Password:" */
+.inputWrapper.inputWrapperSuccess,
+.inputWrapper.inputWrapperSuccess:focus-within,
+.inputWrapper.inputWrapperSuccess:hover {
+  border-color: var(--color-green);
+  margin-bottom: 4px;
+}
+
+@media only screen and (min-width: 768px) {
+  .inputWrapper.inputWrapperError,
+.inputWrapper.inputWrapperError:focus-within,
+.inputWrapper.inputWrapperError:hover, 
+.inputWrapper.inputWrapperSuccess,
+.inputWrapper.inputWrapperSuccess:focus-within,
+.inputWrapper.inputWrapperSuccess:hover  {
+  margin-bottom: 8px;
+}
+}
+
 .label {
-  color: var(--color-gray, #686868);
-  margin-right: 8px;
-  font-size: 16px;
-  font-weight: 500;
-  white-space: nowrap;
+font-size: 12px;
+line-height: 1.33;
+  color: var(--color-gray);
+  margin-right: 10px;
 }
 
-/* Сам інпут */
+@media only screen and (min-width: 768px) {
+  .label {
+font-size: 14px;
+line-height: 1.29;
+}
+}
+
 .input {
   flex: 1;
   background: transparent;
   border: none;
-  color: var(--color-white, #f9f9f9);
-  font-size: 16px;
-  font-weight: 500;
+ font-size: 12px;
+ line-height: 1.33;
+ padding: 0;
   outline: none;
-  width: 100%;
+  color: var(--color-white);
+}
+
+@media only screen and (min-width: 768px) {
+  .input {
+ font-size: 14px;
+line-height: 1.29;
+}
 }
 
 .input::placeholder {
-  color: var(--color-white, #f9f9f9);
+  color: var(--color-white);
   opacity: 1;
 }
 
-/* 🌟 ФІКС ДЛЯ CHROME: Прибираємо білий фон при автозаповненні паролів */
 .input:-webkit-autofill,
 .input:-webkit-autofill:hover,
 .input:-webkit-autofill:focus,
@@ -62,75 +112,133 @@
   transition: background-color 5000s ease-in-out 0s;
 }
 
-/* Кнопка "Око" */
 .iconButton {
+  position: relative;
   background: none;
   border: none;
-  padding: 0;
-  margin-left: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  color: var(--color-white, #f9f9f9);
-  transition: opacity 0.2s ease;
+  padding: 0;
+  width: 18px;
+  color: var(--color-white);
+  transition: opacity var(--main-transition);
 }
 
 .iconButton:hover {
   opacity: 0.7;
 }
 
-.iconButton svg {
+@media only screen and (min-width: 768px) {
+.iconEye {
+  position: absolute;
   width: 20px;
   height: 20px;
 }
+} 
 
-/* Текст помилки під полем */
 .errorText {
-  color: #e74a3b;
-  font-size: 12px;
+  display: flex;
+  color: var(--color-red);
+  font-size: 10px;
   line-height: 1.2;
-  margin-top: -6px;
-  padding-left: 18px;
 }
 
-/* Кнопка Submit (Registration / Log in) */
+.successText {
+   display: flex;
+  color: var(--color-green);
+  font-size: 10px;
+  line-height: 1.2;
+}
+
+@media only screen and (min-width: 768px) {
+  .errorText, .successText {
+  font-size: 12px;
+line-height: 1.17;
+}
+}
+
+.errorIcon {
+  color: var(--color-red);
+  margin-left: 8px; 
+}
+
+.successIcon {
+  color: var(--color-green);
+  margin-left: 8px;
+}
+
+@media only screen and (min-width: 768px) {
+  .successIcon, .errorIcon {
+  width: 20px;
+  height: 20px;
+}
+}
+
+.buttonsWrapper {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+margin-top: auto;
+}
+
+@media only screen and (min-width: 768px) {
+  .buttonsWrapper {
+  gap: 20px;
+}
+}
+
 .submitBtn {
-  margin-top: 16px;
-  width: 100%;
-  padding: 16px;
+  padding-top: 11px;
+  padding-bottom: 11px;
+  width: 131px;
   border-radius: 30px;
-  background-color: var(--color-white, #f9f9f9);
-  color: var(--color-black, #141414);
-  font-size: 16px;
+  background-color: var(--color-white);
+  color: var( --color-black-light);
   font-weight: 700;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease, opacity 0.3s ease;
+font-size: 14px;
+line-height: 1.29;
+  border: 1px solid var(--color-white);
+  transition: background-color var(--main-transition), border-color var(--main-transition);
 }
 
-.submitBtn:hover:not(:disabled) {
-  background-color: #e0e0e0;
+@media only screen and (min-width: 768px) {
+  .submitBtn {
+    width: auto;
+  padding: 15px 53px;
+  font-size: 20px;
+line-height: 1;
+}
+} 
+
+.submitBtn:hover,
+.submitBtn:focus,
+.submitBtn:active {
+  background-color: transparent;
+  color: var(--color-white);
+  border-color: rgba(249, 249, 249, 0.2);
+
 }
 
-.submitBtn:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
+.registerLink {
+  font-size: 12px;
+line-height: 1.17;
+text-decoration: underline;
+text-decoration-skip-ink: none;
+text-align: center;
+color: var(--color-gray);
+transition: color var(--main-transition);
 }
 
-/* Обгортка для посилання внизу */
-.linkWrapper {
-  text-align: center;
-  margin-top: 14px;
-}
-
-.linkWrapper a {
-  color: var(--color-gray, #686868);
+@media only screen and (min-width: 768px) {
+  .registerLink {
   font-size: 14px;
-  text-decoration: underline;
-  transition: color 0.3s ease;
+line-height: 1.29;
 }
+} 
 
-.linkWrapper a:hover {
-  color: var(--color-white, #f9f9f9);
+.registerLink:hover,
+.registerLink:focus,
+.registerLink:active {
+  color: var(--color-white);
 }

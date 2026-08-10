@@ -19,7 +19,7 @@ const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
   email: yup
     .string()
-    .matches(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/, "Invalid email format")
+    .email("Invalid email format")
     .required("Email is required"),
   password: yup
     .string()
@@ -57,9 +57,7 @@ export default function RegisterForm() {
       validationSchema={schema}
       onSubmit={(values) => mutation.mutate(values)}
     >
-      {/* Дістаємо тільки необхідні параметри: touched, errors та values */}
       {({ touched, errors, values }) => {
-        // Логіка для визначення стану кожного поля
         const isNameError = touched.name && errors.name;
         const isNameSuccess =
           touched.name && !errors.name && values.name.trim() !== "";
@@ -96,10 +94,11 @@ export default function RegisterForm() {
                   className={css.input}
                 />
 
-                {/* Іконки статусу */}
-                {isNameError && <MdErrorOutline className={css.errorIcon} />}
+                {isNameError && (
+                  <MdErrorOutline size={18} className={css.errorIcon} />
+                )}
                 {isNameSuccess && (
-                  <RiCheckboxCircleLine className={css.successIcon} />
+                  <RiCheckboxCircleLine size={18} className={css.successIcon} />
                 )}
               </div>
 
@@ -135,9 +134,11 @@ export default function RegisterForm() {
                   className={css.input}
                 />
 
-                {isEmailError && <MdErrorOutline className={css.errorIcon} />}
+                {isEmailError && (
+                  <MdErrorOutline size={18} className={css.errorIcon} />
+                )}
                 {isEmailSuccess && (
-                  <RiCheckboxCircleLine className={css.successIcon} />
+                  <RiCheckboxCircleLine size={18} className={css.successIcon} />
                 )}
               </div>
 
@@ -173,33 +174,23 @@ export default function RegisterForm() {
                   className={css.input}
                 />
 
-                {/* Кнопка Око */}
                 <button
                   type="button"
                   className={css.iconButton}
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
-                    <LuEyeOff width={18} height={18} />
+                    <LuEyeOff size={18} className={css.iconEye} />
                   ) : (
-                    <LuEye width={18} height={18} />
+                    <LuEye size={18} className={css.iconEye} />
                   )}
                 </button>
 
-                {/* Іконки статусу для пароля (стоять праворуч від ока) */}
                 {isPasswordError && (
-                  <MdErrorOutline
-                    width={18}
-                    height={18}
-                    className={css.errorIcon}
-                  />
+                  <MdErrorOutline size={18} className={css.errorIcon} />
                 )}
                 {isPasswordSuccess && (
-                  <RiCheckboxCircleLine
-                    width={18}
-                    height={18}
-                    className={css.successIcon}
-                  />
+                  <RiCheckboxCircleLine size={18} className={css.successIcon} />
                 )}
               </div>
 
@@ -224,9 +215,9 @@ export default function RegisterForm() {
 
               {serverError && <p className={css.errorText}>{serverError}</p>}
 
-              <div className={css.linkWrapper}>
-                <Link href="/login">Already have an account?</Link>
-              </div>
+              <Link href="/login" className={css.registerLink}>
+                Already have an account?
+              </Link>
             </div>
           </Form>
         );
