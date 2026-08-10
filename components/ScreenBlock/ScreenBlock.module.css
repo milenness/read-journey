@@ -35,5 +35,7 @@
 
 .telImage,
 .deskImage {
+ width: auto; 
+  height: auto;
   object-fit: contain;
 }

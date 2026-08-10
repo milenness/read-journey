@@ -66,7 +66,6 @@ export default function LoginForm() {
 
         return (
           <Form className={css.formContainer}>
-  
             <div className={css.errorWrapper}>
               <div
                 className={`${css.inputWrapper} ${
@@ -133,7 +132,11 @@ export default function LoginForm() {
                   className={css.iconButton}
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  {showPassword ? <LuEyeOff size={18} /> : <LuEye size={18} />}
+                  {showPassword ? (
+                    <LuEyeOff size={18} className={css.iconEye} />
+                  ) : (
+                    <LuEye size={18} className={css.iconEye} />
+                  )}
                 </button>
 
                 {isPasswordError && (
@@ -165,9 +168,9 @@ export default function LoginForm() {
 
               {serverError && <p className={css.errorText}>{serverError}</p>}
 
-                <Link href="/register" className={css.registerLink}>
-                  Don’t have an account?
-                </Link>
+              <Link href="/register" className={css.registerLink}>
+                Don’t have an account?
+              </Link>
             </div>
           </Form>
         );

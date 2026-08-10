@@ -19,7 +19,7 @@ export default function PublicLayout({
               <span className={css.accent}> a book</span>
             </h1>
 
-            <div className="form-container">{children}</div>
+            <>{children}</>
           </div>
           <ScreenBlock />
         </div>

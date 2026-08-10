@@ -16,7 +16,7 @@
   align-items: center;
   background-color: var(--color-gray-dark);
   border-radius: 12px;
-  padding: 14px 16px 14px 14px;
+  padding: 13px 15px 13px 13px;
   transition: border-color var(--main-transition), background-color var(--main-transition);
   border: 1px solid transparent;
 }
@@ -31,7 +31,7 @@
 }
 
   .inputWrapper {
-  padding: 16px 18px 16px 14px;
+  padding: 15px 17px 15px 13px;
 }
 }
 
@@ -112,11 +112,14 @@ line-height: 1.29;
 }
 
 .iconButton {
+  position: relative;
   background: none;
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0;
+  width: 18px;
   color: var(--color-white);
   transition: opacity var(--main-transition);
 }
@@ -126,11 +129,12 @@ line-height: 1.29;
 }
 
 @media only screen and (min-width: 768px) {
-  .iconButton svg {
+.iconEye {
+  position: absolute;
   width: 20px;
   height: 20px;
 }
-}
+} 
 
 .errorText {
   display: flex;
@@ -185,8 +189,8 @@ line-height: 1.17;
 }
 
 .submitBtn {
-  padding-top: 12px;
-  padding-bottom: 12px;
+  padding-top: 11px;
+  padding-bottom: 11px;
   width: 131px;
   border-radius: 30px;
   background-color: var(--color-white);
@@ -201,7 +205,7 @@ line-height: 1.29;
 @media only screen and (min-width: 768px) {
   .submitBtn {
     width: auto;
-  padding: 16px 54px;
+  padding: 15px 53px;
   font-size: 20px;
 line-height: 1;
 }
