@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { Toaster } from "react-hot-toast";
 
-// 1. Імпортуємо наш створений провайдер
 import QueryProvider from "@/components/QueryProvider";
 
 const gilroy = localFont({
@@ -69,6 +69,38 @@ export default function RootLayout({
     <html lang="en" data-scroll-behavior="smooth">
       <body className={`${gilroy.variable} ${sfProText.variable}`}>
         <QueryProvider>{children}</QueryProvider>
+        <Toaster
+          position="top-center"
+          toastOptions={{
+            style: {
+              fontSize: "16px",
+              padding: "16px 24px",
+              borderRadius: "12px",
+              background: "var(--color-black-light)",
+              color: "var(--color-white)",
+              border: "1px solid rgba(249, 249, 249, 0.2)",
+              boxShadow: "0 10px 25px rgba(0, 0, 0, 0.15)",
+            },
+            success: {
+              style: {
+                border: "1px solid var(--color-green)",
+              },
+              iconTheme: {
+                primary: "var(--color-green)",
+                secondary: "var(--color-black-light)",
+              },
+            },
+            error: {
+              style: {
+                border: "1px solid var(--color-red)",
+              },
+              iconTheme: {
+                primary: "var(--color-red)",
+                secondary: "var(--color-black-light)",
+              },
+            },
+          }}
+        />
       </body>
     </html>
   );

@@ -5,11 +5,7 @@
 }
 
 .errorWrapper {
-  margin-bottom: 8px;
-}
-
-.errorWrapper:not(:has(~ .errorWrapper)) {
-  margin-bottom: 0; 
+  margin-bottom: 14px;
 }
 
 .inputWrapper {
@@ -19,18 +15,13 @@
   border-radius: 12px;
   padding: 13px 15px 13px 13px;
   transition: border-color var(--main-transition), background-color var(--main-transition);
-  border: 1px solid transparent;
+  border: 1px solid var(--color-gray-dark);
 }
 
 @media only screen and (min-width: 768px) {
   .errorWrapper {
-  margin-bottom: 14px;
+  margin-bottom: 22px;
 }
-
-.errorWrapper:not(:has(~ .errorWrapper)) {
-  margin-bottom: 0; 
-}
-
   .inputWrapper {
   padding: 15px 17px 15px 13px;
 }
@@ -40,30 +31,22 @@
 .inputWrapper:hover {
   border-color: rgba(255, 255, 255, 0.2);
 }
-
-.inputWrapper.inputWrapperError,
-.inputWrapper.inputWrapperError:focus-within,
-.inputWrapper.inputWrapperError:hover {
+ 
+.inputWrapperError, 
+.inputWrapperError:hover,
+.inputWrapperError:focus-within {
   border-color: var(--color-red);
-  margin-bottom: 4px;
 }
 
-.inputWrapper.inputWrapperSuccess,
-.inputWrapper.inputWrapperSuccess:focus-within,
-.inputWrapper.inputWrapperSuccess:hover {
+.inputWrapperSuccess, 
+.inputWrapperSuccess:hover,
+.inputWrapperSuccess:focus-within {
   border-color: var(--color-green);
-  margin-bottom: 4px;
 }
 
-@media only screen and (min-width: 768px) {
-  .inputWrapper.inputWrapperError,
-.inputWrapper.inputWrapperError:focus-within,
-.inputWrapper.inputWrapperError:hover, 
-.inputWrapper.inputWrapperSuccess,
-.inputWrapper.inputWrapperSuccess:focus-within,
-.inputWrapper.inputWrapperSuccess:hover  {
-  margin-bottom: 8px;
-}
+.errorWrapper:has(.inputWrapperError),
+.errorWrapper:has(.inputWrapperSuccess) {
+  margin-bottom: 4px;
 }
 
 .label {
@@ -142,6 +125,7 @@ line-height: 1.29;
   color: var(--color-red);
   font-size: 10px;
   line-height: 1.2;
+   margin-top: 2px;
 }
 
 .successText {
@@ -149,6 +133,7 @@ line-height: 1.29;
   color: var(--color-green);
   font-size: 10px;
   line-height: 1.2;
+   margin-top: 2px;
 }
 
 @media only screen and (min-width: 768px) {
@@ -168,12 +153,6 @@ line-height: 1.17;
   margin-left: 8px;
 }
 
-@media only screen and (min-width: 768px) {
-  .successIcon, .errorIcon {
-  width: 20px;
-  height: 20px;
-}
-}
 
 .buttonsWrapper {
   display: flex;
@@ -194,7 +173,6 @@ margin-top: 20px;
  margin-top: auto;
 }
 }
-
 
 .submitBtn {
   padding-top: 11px;

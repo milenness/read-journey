@@ -5,11 +5,7 @@
 }
 
 .errorWrapper {
-  margin-bottom: 8px;
-}
-
-.errorWrapper:not(:has(~ .errorWrapper)) {
-  margin-bottom: 0; 
+  margin-bottom: 14px;
 }
 
 .inputWrapper {
@@ -24,11 +20,7 @@
 
 @media only screen and (min-width: 768px) {
   .errorWrapper {
-  margin-bottom: 14px;
-}
-
-.errorWrapper:not(:has(~ .errorWrapper)) {
-  margin-bottom: 0; 
+  margin-bottom: 22px;
 }
 
   .inputWrapper {
@@ -45,25 +37,17 @@
 .inputWrapper.inputWrapperError:focus-within,
 .inputWrapper.inputWrapperError:hover {
   border-color: var(--color-red);
-  margin-bottom: 4px;
 }
 
 .inputWrapper.inputWrapperSuccess,
 .inputWrapper.inputWrapperSuccess:focus-within,
 .inputWrapper.inputWrapperSuccess:hover {
   border-color: var(--color-green);
-  margin-bottom: 4px;
 }
 
-@media only screen and (min-width: 768px) {
-  .inputWrapper.inputWrapperError,
-.inputWrapper.inputWrapperError:focus-within,
-.inputWrapper.inputWrapperError:hover, 
-.inputWrapper.inputWrapperSuccess,
-.inputWrapper.inputWrapperSuccess:focus-within,
-.inputWrapper.inputWrapperSuccess:hover  {
-  margin-bottom: 8px;
-}
+.errorWrapper:has(.inputWrapperError),
+.errorWrapper:has(.inputWrapperSuccess) {
+  margin-bottom: 4px;
 }
 
 .label {
@@ -77,6 +61,11 @@ line-height: 1.33;
   .label {
 font-size: 14px;
 line-height: 1.29;
+}
+
+.errorWrapper:has(.inputWrapperError),
+.errorWrapper:has(.inputWrapperSuccess) {
+  margin-bottom: 6px;
 }
 }
 
@@ -142,6 +131,7 @@ line-height: 1.29;
   color: var(--color-red);
   font-size: 10px;
   line-height: 1.2;
+  margin-top: 2px;
 }
 
 .successText {
@@ -149,6 +139,7 @@ line-height: 1.29;
   color: var(--color-green);
   font-size: 10px;
   line-height: 1.2;
+   margin-top: 2px;
 }
 
 @media only screen and (min-width: 768px) {
@@ -166,13 +157,6 @@ line-height: 1.17;
 .successIcon {
   color: var(--color-green);
   margin-left: 8px;
-}
-
-@media only screen and (min-width: 768px) {
-  .successIcon, .errorIcon {
-  width: 20px;
-  height: 20px;
-}
 }
 
 .buttonsWrapper {

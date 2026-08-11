@@ -10,6 +10,7 @@ import Link from "next/link";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import { MdErrorOutline } from "react-icons/md";
 import { RiCheckboxCircleLine } from "react-icons/ri";
+import toast from "react-hot-toast";
 
 import { registerUser, SignUpRequest } from "@/lib/api";
 import { useAuthStore } from "@/store/authStore";
@@ -41,15 +42,17 @@ export default function RegisterForm() {
     mutationFn: registerUser,
     onSuccess: (data) => {
       setUser({ name: data.name, email: data.email });
+      toast.success("Successfully registered!");
       router.push("/recommended");
     },
-  });
+    onError: (error) => {
+      const errorMessage =
+        (axios.isAxiosError(error) && error.response?.data?.error) ||
+        "Registration failed. Please try again.";
 
-  const serverError = mutation.isError
-    ? (axios.isAxiosError(mutation.error) &&
-        mutation.error.response?.data?.error) ||
-      "Registration failed. Please try again."
-    : null;
+      toast.error(errorMessage);
+    },
+  });
 
   return (
     <Formik<SignUpRequest>
@@ -212,8 +215,6 @@ export default function RegisterForm() {
               >
                 {mutation.isPending ? "Loading..." : "Registration"}
               </button>
-
-              {serverError && <p className={css.errorText}>{serverError}</p>}
 
               <Link href="/login" className={css.registerLink}>
                 Already have an account?

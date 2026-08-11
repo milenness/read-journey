@@ -10,6 +10,7 @@ import Link from "next/link";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import { MdErrorOutline } from "react-icons/md";
 import { RiCheckboxCircleLine } from "react-icons/ri";
+import toast from "react-hot-toast";
 
 import { loginUser, SignInRequest } from "@/lib/api";
 import { useAuthStore } from "@/store/authStore";
@@ -41,13 +42,14 @@ export default function LoginForm() {
       setUser({ name: data.name, email: data.email });
       router.push("/recommended");
     },
-  });
+    onError: (error) => {
+      const errorMessage =
+        (axios.isAxiosError(error) && error.response?.data?.error) ||
+        "Invalid email or password.";
 
-  const serverError = mutation.isError
-    ? (axios.isAxiosError(mutation.error) &&
-        mutation.error.response?.data?.error) ||
-      "Invalid email or password."
-    : null;
+      toast.error(errorMessage);
+    },
+  });
 
   return (
     <Formik<SignInRequest>
@@ -165,8 +167,6 @@ export default function LoginForm() {
               >
                 {mutation.isPending ? "Loading..." : "Log in"}
               </button>
-
-              {serverError && <p className={css.errorText}>{serverError}</p>}
 
               <Link href="/register" className={css.registerLink}>
                 Don’t have an account?
