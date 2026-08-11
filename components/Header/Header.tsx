@@ -119,6 +119,9 @@ export default function Header() {
             pathname={pathname}
             onClose={() => setIsMobileMenuOpen(false)}
             onLogout={handleLogout}
+            isLogoutPending={
+              logoutMutation.isPending || logoutMutation.isSuccess
+            }
           />
         )}
       </header>

@@ -1,36 +1,34 @@
-/* Напівпрозорий (або суцільний) фон на весь екран */
 .backdrop {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: var(--color-black); /* Якщо треба напівпрозорий, замініть на rgba(0,0,0, 0.8) */
+  background-color: rgba(20, 20, 20, 0.6);
   z-index: 9999;
   display: flex;
-  justify-content: center;
+ justify-content: flex-end;
   align-items: center;
 }
 
-/* Внутрішній контейнер меню */
 .modal {
   position: relative;
-  width: 100%;
+  padding: 40px 55px;
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 40px 20px;
+  background-color: var(--color-gray-dark);
 }
 
 .closeBtn {
-  align-self: flex-end;
-  background: none;
-  border: none;
-  color: var(--color-white);
-  font-size: 32px;
-  line-height: 1;
-  cursor: pointer;
-  margin-bottom: 40px;
+ position: absolute;
+ display: flex;
+ border: none;
+ background-color: transparent;
+ color: var(--color-white);
+ padding: 6px;
+ top: 34px;
+ right: 40px;
   transition: opacity var(--main-transition);
 }
 
@@ -47,16 +45,14 @@
 }
 
 .navList {
-  list-style: none;
-  padding: 0;
   display: flex;
   flex-direction: column;
   gap: 24px;
-  text-align: center;
 }
 
 .navLink {
-  font-size: 18px;
+  position: relative;
+font-size: 14px;
   color: var(--color-gray);
   text-decoration: none;
   transition: color var(--main-transition);
@@ -68,20 +64,42 @@
   color: var(--color-white);
 }
 
-.logOutBtn {
-  padding: 14px 28px;
+.navLink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 3px;
+  background-color: var(--color-blue);
+  border-radius: 8px;
+  
+  opacity: 0;
+  transition: opacity var(--main-transition); 
+}
+
+.navLink.active::after,
+.navLink:hover::after,
+.navLink:focus::after {
+  opacity: 1;
+}
+
+  .logOutBtn {
+  display: flex;
+  padding: 10px 20px;
   font-weight: 700;
-  font-size: 16px;
-  color: var(--color-white);
-  border: 1px solid rgba(249, 249, 249, 0.2);
-  border-radius: 30px;
-  background: transparent;
-  cursor: pointer;
-  margin-top: auto;
-  transition: border-color var(--main-transition);
+font-size: 14px;
+background-color: transparent;
+border: 1px solid rgba(249, 249, 249, 0.2);
+border-radius: 30px;
+color: var(--color-white);
+transition: background-color var(--main-transition), color  var(--main-transition), border-color var(--main-transition) ;
 }
 
 .logOutBtn:hover,
-.logOutBtn:focus {
-  border-color: var(--color-white);
+.logOutBtn:focus,
+.logOutBtn:active {
+background-color: var(--color-white);
+border-color: var(--color-white);
+color: var(--color-black-light);
 }
