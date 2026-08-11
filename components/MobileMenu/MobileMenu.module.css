@@ -1,0 +1,87 @@
+/* Напівпрозорий (або суцільний) фон на весь екран */
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--color-black); /* Якщо треба напівпрозорий, замініть на rgba(0,0,0, 0.8) */
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Внутрішній контейнер меню */
+.modal {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 40px 20px;
+}
+
+.closeBtn {
+  align-self: flex-end;
+  background: none;
+  border: none;
+  color: var(--color-white);
+  font-size: 32px;
+  line-height: 1;
+  cursor: pointer;
+  margin-bottom: 40px;
+  transition: opacity var(--main-transition);
+}
+
+.closeBtn:hover,
+.closeBtn:focus {
+  opacity: 0.7;
+}
+
+.nav {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navList {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  text-align: center;
+}
+
+.navLink {
+  font-size: 18px;
+  color: var(--color-gray);
+  text-decoration: none;
+  transition: color var(--main-transition);
+}
+
+.navLink.active,
+.navLink:hover,
+.navLink:focus {
+  color: var(--color-white);
+}
+
+.logOutBtn {
+  padding: 14px 28px;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--color-white);
+  border: 1px solid rgba(249, 249, 249, 0.2);
+  border-radius: 30px;
+  background: transparent;
+  cursor: pointer;
+  margin-top: auto;
+  transition: border-color var(--main-transition);
+}
+
+.logOutBtn:hover,
+.logOutBtn:focus {
+  border-color: var(--color-white);
+}

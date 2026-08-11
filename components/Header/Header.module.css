@@ -155,8 +155,19 @@ line-height: 1.13;
   font-weight: 700;
 font-size: 16px;
 line-height: 1.13;
+background-color: transparent;
 border: 1px solid rgba(249, 249, 249, 0.2);
 border-radius: 30px;
+color: var(--color-white);
+transition: background-color var(--main-transition), color  var(--main-transition), border-color var(--main-transition) ;
+}
+
+.logOut:hover,
+.logOut:focus,
+.logOut:active {
+background-color: var(--color-white);
+border-color: var(--color-white);
+color: var(--color-black-light);
 }
 } 
 

@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import PrivateRoute from "@/components/PrivateRoute";
 
 export default function PrivateLayout({
   children,
@@ -6,9 +7,9 @@ export default function PrivateLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
+    <PrivateRoute>
       <Header />
       <main>{children}</main>
-    </>
+    </PrivateRoute>
   );
 }

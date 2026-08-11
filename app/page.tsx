@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
+import Loader from "@/components/Loader";
 
 export default function HomePage() {
   const router = useRouter();
@@ -16,16 +17,5 @@ export default function HomePage() {
     }
   }, [user, router]);
 
-  return (
-    <div
-      style={{
-        height: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      Завантаження...
-    </div>
-  );
+  return <Loader />;
 }
