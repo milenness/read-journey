@@ -1,6 +1,6 @@
 import ScreenBlock from "@/components/ScreenBlock/ScreenBlock";
 import css from "./page.module.css";
-import LogoLink from "@/components/LogoLink/LogoLink";
+import LogoLink from "@/components/Logo/Logo";
 
 export default function PublicLayout({
   children,

@@ -1,0 +1,128 @@
+.filtersContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.filtersTitle {
+ font-size: 10px;
+  line-height: 1.2;
+  margin-bottom: 8px;
+  position: relative;
+  left: 14px;
+}
+
+@media only screen and (min-width: 768px) {
+  .filtersTitle {
+   font-size: 14px;
+line-height: 1.29;
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+  background-color: var(--color-gray-dark);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 8px;
+  transition: border-color var(--main-transition), background-color var(--main-transition);
+  border: 1px solid transparent;
+}
+
+.inputWrapper:last-of-type {
+  margin-bottom: 20px;
+}
+
+@media only screen and (min-width: 768px) {
+  .inputWrapper {
+     padding: 16px 14px;
+  }
+}
+
+.inputWrapper:focus-within,
+.inputWrapper:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.label {
+  font-size: 12px;
+  line-height: 1.33;
+  color: var(--color-gray);
+  margin-right: 10px;
+  white-space: nowrap;
+}
+
+@media only screen and (min-width: 768px) {
+  .label {
+    font-size: 14px;
+    line-height: 1.29;
+  }
+}
+
+.input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  font-size: 12px;
+  line-height: 1.33;
+  padding: 0;
+  outline: none;
+  color: var(--color-white);
+}
+
+@media only screen and (min-width: 768px) {
+  .input {
+    font-size: 14px;
+    line-height: 1.29;
+  }
+}
+
+.input::placeholder {
+  color: var(--color-white);
+  opacity: 1;
+}
+
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus,
+.input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #262626 inset !important;
+  -webkit-text-fill-color: white !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.submitBtn {
+    width: fit-content;
+  padding: 10px 20px;
+  border-radius: 30px;
+  background-color: transparent;
+  color: var(--color-white);
+  font-weight: 700;
+font-size: 14px;
+line-height: 1.29;
+  border: 1px solid var(--color-white);
+  transition: background-color var(--main-transition), border-color var(--main-transition);
+}
+
+@media only screen and (min-width: 768px) {
+  .submitBtn {
+  padding: 12px 28px;
+  font-size: 16px;
+line-height: 1.13;
+
+}
+} 
+
+.submitBtn:hover,
+.submitBtn:focus,
+.submitBtn:active {
+  background-color: var(--color-white);
+  color: var(--color-black-light);
+  border-color: var(--color-white);
+
+}

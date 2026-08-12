@@ -1,0 +1,33 @@
+.pageSection {
+    padding: 10px 0 40px 0;
+}
+
+@media screen and (min-width: 768px) {
+  .pageSection {
+    padding: 16px 0 32px 0;
+}
+}
+
+@media screen and (min-width: 1440px) {
+  .pageSection {
+    padding-bottom: 37px;
+}
+
+}
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+@media screen and (min-width: 768px) {
+  .pageWrapper {
+  gap: 16px;
+}
+}
+
+@media screen and (min-width: 1440px) {
+  .pageWrapper {
+    flex-direction: row;
+  }
+}

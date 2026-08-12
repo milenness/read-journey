@@ -54,8 +54,6 @@ export default function Header() {
 
   return (
     <>
-      {(logoutMutation.isPending || logoutMutation.isSuccess) && <Loader />}
-
       <header className={css.header}>
         <div className="container">
           <div className={css.wrapper}>
@@ -113,18 +111,18 @@ export default function Header() {
             </button>
           </div>
         </div>
-
-        {isMobileMenuOpen && (
-          <MobileMenu
-            pathname={pathname}
-            onClose={() => setIsMobileMenuOpen(false)}
-            onLogout={handleLogout}
-            isLogoutPending={
-              logoutMutation.isPending || logoutMutation.isSuccess
-            }
-          />
-        )}
       </header>
+
+      {isMobileMenuOpen && (
+        <MobileMenu
+          pathname={pathname}
+          onClose={() => setIsMobileMenuOpen(false)}
+          onLogout={handleLogout}
+          isLogoutPending={logoutMutation.isPending || logoutMutation.isSuccess}
+        />
+      )}
+
+      {(logoutMutation.isPending || logoutMutation.isSuccess) && <Loader />}
     </>
   );
 }
