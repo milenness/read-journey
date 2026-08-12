@@ -1,4 +1,6 @@
 import css from "./StartLibrary.module.css";
+import Link from "next/link";
+import { FaArrowRight } from "react-icons/fa6";
 
 export default function ScreenBlock() {
   return (
@@ -15,11 +17,16 @@ export default function ScreenBlock() {
         <li className={css.startItem}>
           <div className={css.startNumber}>2</div>
           <p className={css.startText}>
-            <span className={css.accent}>Create your first workout:</span> define a goal, choose a period, start
-            training.
+            <span className={css.accent}>Create your first workout:</span>{" "}
+            define a goal, choose a period, start training.
           </p>
         </li>
       </ul>
+
+      <Link href="/recommended" className={css.libraryLink}>
+        My library
+        <FaArrowRight size={24} className={css.arrow} />
+      </Link>
     </div>
   );
 }

@@ -11,6 +11,7 @@ import StartLibrary from "@/components/StartLibrary";
 // import RecommendedBooks from "@/components/RecommendedBooks/RecommendedBooks"; // Розкоментуєте, коли дійдете до нього
 
 import css from "./RecommendedPage.module.css";
+import Quote from "@/components/Quote";
 
 export default function RecommendedPage() {
   const router = useRouter();
@@ -26,11 +27,13 @@ export default function RecommendedPage() {
 
   return (
     <section className={css.pageSection}>
+    
      <div className="container">
         <div className={css.pageWrapper}>
           <Dashboard>
             <Filters />
             <StartLibrary />
+            <Quote/>
           </Dashboard>
   
           <div style={{ flex: 1, color: "white" }}>
