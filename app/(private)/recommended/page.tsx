@@ -8,7 +8,7 @@ import { useAuthStore } from "@/store/authStore";
 import Dashboard from "@/components/Dashboard";
 import Filters from "@/components/Filters";
 import StartLibrary from "@/components/StartLibrary";
-// import RecommendedBooks from "@/components/RecommendedBooks/RecommendedBooks"; // Розкоментуєте, коли дійдете до нього
+import RecommendedBooks from "@/components/RecommendedBooks";
 
 import css from "../page.module.css";
 import Quote from "@/components/Quote";
@@ -27,20 +27,16 @@ export default function RecommendedPage() {
 
   return (
     <section className={css.pageSection}>
-    
-     <div className="container">
+      <div className="container">
         <div className={css.pageWrapper}>
           <Dashboard>
             <Filters />
             <StartLibrary />
-            <Quote/>
+            <Quote />
           </Dashboard>
-  
-          <div style={{ flex: 1, color: "white" }}>
-            Тут будуть рекомендовані книги...
-          </div>
+          <RecommendedBooks/>
         </div>
-     </div>
+      </div>
     </section>
   );
 }

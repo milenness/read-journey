@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useAuthStore } from "@/store/authStore";
+import { IBooksResponse, GetBooksParams } from "@/types/book";
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -61,7 +62,6 @@ axios.interceptors.response.use(
   },
 );
 
-
 export const registerUser = async (
   data: SignUpRequest,
 ): Promise<AuthResponse> => {
@@ -87,4 +87,14 @@ export const fetchCurrentUser = async () => {
 export const refreshUserToken = async () => {
   const res = await axios.get("/users/current/refresh");
   return res.data;
+};
+
+export const getRecommendedBooks = async (
+  params?: GetBooksParams,
+): Promise<IBooksResponse> => {
+  const { data } = await axios.get<IBooksResponse>("/books/recommend", {
+    params,
+  });
+
+  return data;
 };

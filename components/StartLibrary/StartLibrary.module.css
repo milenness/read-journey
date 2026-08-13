@@ -4,6 +4,19 @@
 background-color: var(--color-gray-dark);
 display: flex;
 flex-direction: column;
+width: 100%;
+}
+
+@media only screen and (min-width: 768px) {
+  .startBlock {
+width: 313px;
+}
+}
+
+@media only screen and (min-width: 1440px) {
+  .startBlock {
+width: 313px;
+}
 }
 
 .title {

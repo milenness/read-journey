@@ -1,0 +1,25 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* Щоб зайняв залишок місця поруч з Dashboard */
+}
+
+.title {
+  font-size: 20px;
+  line-height: 1;
+  color: var(--color-white);
+  margin-bottom: 20px;
+}
+
+@media screen and (min-width: 768px) {
+  .title {
+    font-size: 28px;
+    margin-bottom: 28px;
+  }
+}
+
+.booksList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* Відстань між картками книг */
+}
