@@ -1,25 +1,90 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  flex: 1; /* Щоб зайняв залишок місця поруч з Dashboard */
+  padding: 40px 20px;
+  border-radius: 30px;
+background-color: var(--color-black-light);
+}
+
+@media screen and (min-width: 768px) {
+  .wrapper {
+    padding: 40px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .wrapper {
+    padding-bottom: 28px;
+  }
+}
+
+.headerWrapper {
+display: flex;
+justify-content: space-between;
 }
 
 .title {
   font-size: 20px;
   line-height: 1;
   color: var(--color-white);
-  margin-bottom: 20px;
 }
 
 @media screen and (min-width: 768px) {
   .title {
     font-size: 28px;
-    margin-bottom: 28px;
   }
 }
 
+.pagination {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+@media screen and (min-width: 768px) {
+  .pagination {
+  margin-bottom: 20px;
+}
+}
+
+.pageBtn {
+  width: 40px;
+height: 40px;
+border-radius: 100%;
+border: 1px solid rgba(249, 249, 249, 0.2);
+display: flex;
+align-items: center;
+justify-content: center;
+background-color: transparent;
+}
+
+.pageBtn:disabled {
+  cursor: default;
+}
+
+.arrow {
+  color: var(--color-white);
+  transition: color var(--main-transition);
+}
+
+.pageBtn:disabled .arrow {
+  color: rgba(249, 249, 249, 0.2);
+}
 .booksList {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px; /* Відстань між картками книг */
+  gap: 21px;
+}
+
+@media screen and (min-width: 768px) {
+ .booksList {
+  gap: 25px;
+}
+}
+
+@media screen and (min-width: 1440px) {
+ .booksList {
+  column-gap: 20px;
+  row-gap: 27px;
+}
 }

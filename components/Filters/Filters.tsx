@@ -1,22 +1,39 @@
 "use client";
 
 import { useId } from "react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import css from "./Filters.module.css";
 
 export default function Filters() {
   const titleId = useId();
   const authorId = useId();
 
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Дістаємо значення з форми
     const formData = new FormData(e.currentTarget);
-    const title = formData.get("title");
-    const author = formData.get("author");
+    const title = formData.get("title")?.toString().trim() || "";
+    const author = formData.get("author")?.toString().trim() || "";
 
-    console.log("Фільтруємо за:", { title, author });
-    // TODO: Тут буде логіка оновлення стану або запит на бекенд
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (title) {
+      params.set("title", title);
+    } else {
+      params.delete("title");
+    }
+
+    if (author) {
+      params.set("author", author);
+    } else {
+      params.delete("author");
+    }
+
+    router.push(`${pathname}?${params.toString()}`);
   };
 
   return (
@@ -34,6 +51,7 @@ export default function Filters() {
             type="text"
             placeholder="Enter text"
             className={css.input}
+            defaultValue={searchParams.get("title") || ""}
           />
         </div>
 
@@ -47,6 +65,7 @@ export default function Filters() {
             type="text"
             placeholder="Enter text"
             className={css.input}
+            defaultValue={searchParams.get("author") || ""}
           />
         </div>
 

@@ -1,5 +1,6 @@
 .book {
   width: 137px; 
+  cursor: pointer;
 }
 
 .bookImage {
@@ -26,4 +27,89 @@ color: var(--color-gray);
 white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.modalImage {
+  border-radius: 8px;
+  width: 140px;
+  margin-bottom: 16px;
+  object-fit: cover;
+}
+
+@media only screen and (min-width: 768px) {
+  .modalImage {
+  width: 153px;
+}
+}
+
+.modalTitle {
+   width: 100%;
+  max-width: 350px; 
+  font-size: 18px;
+  margin-bottom: 2px;
+}
+
+@media only screen and (min-width: 768px) {
+ .modalTitle {
+ font-size: 20px;
+line-height: 1;
+}
+}
+
+.modalAuthor {
+  color: var(--color-gray);
+  font-weight: 500;
+font-size: 12px;
+line-height: 1.17;
+margin-bottom: 4px;
+text-align: center;
+}
+
+@media only screen and (min-width: 768px) {
+.modalAuthor {
+font-size: 14px;
+line-height: 1.29;
+}
+}
+
+.modalPages {
+  font-size: 10px;
+line-height: 1.2;
+margin-bottom: 20px;
+text-align: center;
+}
+
+@media only screen and (min-width: 768px) {
+.modalPages {
+margin-bottom: 32px;
+}
+}
+
+  .addButton {
+  display: flex;
+  padding: 12px 24px;
+  font-weight: 700;
+background-color: transparent;
+border: 1px solid rgba(249, 249, 249, 0.2);
+border-radius: 30px;
+color: var(--color-white);
+transition: background-color var(--main-transition), color  var(--main-transition), border-color var(--main-transition) ;
+}
+
+@media only screen and (min-width: 768px) {
+.addButton {
+ padding: 14px 28px;
+ font-size: 16px;
+line-height: 1.13;
+
+}
+}
+
+
+.addButton:hover,
+.addButton:focus,
+.addButton:active {
+background-color: var(--color-white);
+border-color: var(--color-white);
+color: var(--color-black-light);
 }
