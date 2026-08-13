@@ -1,0 +1,29 @@
+.quote {
+    display: none;
+}
+
+@media only screen and (min-width: 1440px) {
+  .quote {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    padding: 15px 20px 14px 20px;
+    background-color: var(--color-gray-dark);
+   border-radius: 12px;
+}
+}
+
+.booksImg {
+  font-size: 40px;
+  display: flex;
+  text-align: center;
+}
+
+.text {
+  max-width: 219px;
+  color:var(--color-gray)
+}
+
+.accent {
+  color: var(--color-white);
+}

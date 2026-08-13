@@ -10,7 +10,7 @@ import Filters from "@/components/Filters";
 import StartLibrary from "@/components/StartLibrary";
 // import RecommendedBooks from "@/components/RecommendedBooks/RecommendedBooks"; // Розкоментуєте, коли дійдете до нього
 
-import css from "./RecommendedPage.module.css";
+import css from "../page.module.css";
 import Quote from "@/components/Quote";
 
 export default function RecommendedPage() {

@@ -5,13 +5,13 @@ import { FaArrowRight } from "react-icons/fa6";
 export default function ScreenBlock() {
   return (
     <div className={css.startBlock}>
-      <h3>Start your workout</h3>
+      <h3 className={css.title}>Start your workout</h3>
       <ul className={css.startList}>
         <li className={css.startItem}>
           <div className={css.startNumber}>1</div>
           <p className={css.startText}>
             <span className={css.accent}>Create a personal library:</span> add
-            the books you intend to read to it.
+            the books you intend to read <br /> to it.
           </p>
         </li>
         <li className={css.startItem}>
@@ -23,7 +23,7 @@ export default function ScreenBlock() {
         </li>
       </ul>
 
-      <Link href="/recommended" className={css.libraryLink}>
+      <Link href="/library" className={css.libraryLink}>
         My library
         <FaArrowRight size={24} className={css.arrow} />
       </Link>
