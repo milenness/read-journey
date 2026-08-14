@@ -38,7 +38,7 @@ export default function Filters() {
 
   return (
     <div className={css.filtersContainer}>
-      <p className={css.filtersTitle}>Filters:</p>
+      <h4 className={css.filtersTitle}>Filters:</h4>
 
       <form onSubmit={handleSubmit} className={css.form}>
         <div className={css.inputWrapper}>

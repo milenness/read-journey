@@ -4,6 +4,9 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { TbBooksOff } from "react-icons/tb";
+import { MdOutlineNearbyError } from "react-icons/md";
+
 
 import { getRecommendedBooks } from "@/lib/api";
 import Book from "@/components/Book/Book";
@@ -20,13 +23,11 @@ export default function RecommendedBooks() {
   const [prevLimit, setPrevLimit] = useState(10);
   const [isMounted, setIsMounted] = useState(false);
 
-  // Скидання сторінки при зміні ліміту
   if (limit !== prevLimit) {
     setPrevLimit(limit);
     setPage(1);
   }
 
-  // Скидання сторінки при зміні параметрів пошуку
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setPage(1);
@@ -53,7 +54,6 @@ export default function RecommendedBooks() {
   }, []);
 
   const { data, isLoading, isError } = useQuery({
-    // Додаємо title та author до ключа, щоб кеш оновлювався при пошуку
     queryKey: ["recommendedBooks", page, limit, title, author],
     queryFn: () => getRecommendedBooks({ page, limit, title, author }),
     enabled: isMounted,
@@ -76,7 +76,7 @@ export default function RecommendedBooks() {
         <div className={css.headerWrapper}>
           <h2 className={css.title}>Recommended</h2>
 
-          {totalPages > 1 && (
+          {!isError && books.length > 0 && (
             <div className={css.pagination}>
               <button
                 type="button"
@@ -91,18 +91,21 @@ export default function RecommendedBooks() {
                 type="button"
                 className={css.pageBtn}
                 onClick={handleNextPage}
-                disabled={page === totalPages}
+                disabled={page >= totalPages}
               >
-                <FiChevronRight className={css.arrow} size={20} />
+                <FiChevronRight className={css.arrow} size={100} />
               </button>
             </div>
           )}
         </div>
 
         {isError && (
-          <p style={{ color: "var(--color-red, red)", marginTop: "20px" }}>
-            Oops! Something went wrong while loading books.
-          </p>
+          <div className={css.errorStub}>
+            <p className={css.noText}>
+              <MdOutlineNearbyError className={css.errorIcon} size={100} />
+              Oops! Something went wrong while loading books.
+            </p>
+          </div>
         )}
 
         {!isLoading && !isError && books.length > 0 && (
@@ -114,9 +117,10 @@ export default function RecommendedBooks() {
         )}
 
         {!isLoading && !isError && books.length === 0 && (
-          <p style={{ color: "var(--color-gray)", marginTop: "20px" }}>
-            No books found.
-          </p>
+          <div className={css.errorStub}>
+            <TbBooksOff className={css.errorIcon} size={100} />
+            <p className={css.noText}>No books found.</p>
+          </div>
         )}
       </div>
     </>
