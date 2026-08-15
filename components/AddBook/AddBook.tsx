@@ -76,8 +76,8 @@ export default function AddBook() {
               placeholder="Enter text"
               className={css.input}
               required
-              minLength={2} // 👈 Захист на рівні HTML
-              maxLength={100} // 👈 Щоб не ввели "Війну і мир" прямо в заголовок
+              minLength={2}
+              maxLength={100}
             />
           </div>
 
@@ -92,7 +92,7 @@ export default function AddBook() {
               placeholder="Enter text"
               className={css.input}
               required
-              minLength={2} // 👈 Захист на рівні HTML
+              minLength={2}
               maxLength={100}
             />
           </div>
@@ -106,7 +106,7 @@ export default function AddBook() {
               name="pages"
               type="number"
               min="1"
-              max="10000" // 👈 Захист на рівні HTML
+              max="10000"
               placeholder="Enter number"
               className={css.input}
               required
@@ -123,14 +123,12 @@ export default function AddBook() {
         isOpen={isSuccessModalOpen}
         onClose={() => setIsSuccessModalOpen(false)}
       >
-        <div className={css.successModalContent}>
           <h2>Good job!</h2>
           <p>
             Your book is now in{" "}
             <span className={css.highlight}>the library!</span> The joy knows no
             bounds and now you can start your training.
           </p>
-        </div>
       </Modal>
     </>
   );

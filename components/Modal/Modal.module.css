@@ -21,13 +21,13 @@
   border: 1px solid rgba(104, 104, 104, 0.2);
 border-radius: 12px;
   background-color: var(--color-black-light);
-   padding: 40px 98px;
+   padding: 40px;
    text-align: center;
 }
 
 @media only screen and (min-width: 768px) {
 .modal {
-   padding: 50px 169px;
+   padding: 50px;
 }
 }
 

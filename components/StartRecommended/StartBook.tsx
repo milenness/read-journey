@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Modal from "@/components/Modal";
-import css from "./StartRecommended.module.css"; // або твої стилі сайдбару
+import css from "./StartRecommended.module.css";
 import { IBook } from "@/types/book";
 
 interface StartBookProps {
@@ -47,7 +47,6 @@ export default function StartBook({ data }: StartBookProps) {
         </h5>
       </li>
 
-      {/* Якщо в сайдбарі теж потрібна модалка по кліку — вона тут є, аналогічно до Book */}
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <Image
           src={imageUrl}
