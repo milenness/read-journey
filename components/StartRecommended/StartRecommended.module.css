@@ -1,0 +1,106 @@
+.startBlock {
+  padding: 20px;
+  border-radius: 12px;
+background-color: var(--color-gray-dark);
+display: flex;
+flex-direction: column;
+width: 100%;
+}
+
+@media only screen and (min-width: 768px) {
+  .startBlock {
+width: 313px;
+}
+}
+
+@media only screen and (min-width: 1440px) {
+  .startBlock {
+width: 313px;
+}
+}
+
+.title {
+  font-size: 18px;
+line-height: 1;
+margin-bottom: 14px;
+}
+
+@media only screen and (min-width: 768px) {
+  .title {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+}
+
+.startList {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 11px;
+}
+
+@media only screen and (min-width: 768px) {
+.startList {
+  margin-bottom: 14px;
+}
+}
+
+.startItem {
+  display: flex;
+  flex-direction: column;
+  max-width: 71px;
+}
+
+.bookImage {
+  border-radius: 8px;
+margin-bottom: 8px;
+height: 107px;
+object-fit: cover;
+  object-position: center;
+}
+
+.bookTitle{
+  margin-bottom: 2px;
+  font-size: 10px;
+line-height: 1.2;
+white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bookAuthor {
+font-weight: 500;
+font-size: 10px;
+line-height: 1.2;
+white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.libraryLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: underline;
+text-decoration-skip-ink: none;
+font-size: 12px;
+line-height: 1.17;
+color: var(--color-gray);
+transition: color var(--main-transition);
+}
+
+.libraryLink:hover,
+.libraryLink:focus,
+.libraryLink:active {
+  color: var(--color-white);
+}
+
+.arrow {
+  color: var(--color-white);
+}
+
+@media only screen and (min-width: 768px) {
+.arrow {
+ width: 24px;
+ height: 24px;
+}
+}

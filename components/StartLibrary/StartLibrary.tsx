@@ -2,7 +2,7 @@ import css from "./StartLibrary.module.css";
 import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa6";
 
-export default function ScreenBlock() {
+export default function StartLibrary() {
   return (
     <div className={css.startBlock}>
       <h3 className={css.title}>Start your workout</h3>

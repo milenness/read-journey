@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useAuthStore } from "@/store/authStore";
-import { IBooksResponse, GetBooksParams } from "@/types/book";
+import { IBooksResponse, GetBooksParams, AddBookRequest } from "@/types/book";
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -97,4 +97,14 @@ export const getRecommendedBooks = async (
   });
 
   return data;
+};
+
+export const addBookToLibrary = async (data: AddBookRequest) => {
+  const res = await axios.post("/books/add", data);
+  return res.data;
+};
+
+export const addRecommendedBookById = async (id: string) => {
+  const res = await axios.post(`/books/add/${id}`);
+  return res.data;
 };

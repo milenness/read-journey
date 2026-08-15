@@ -5,10 +5,10 @@ import { useRouter } from "next/navigation";
 
 import { useAuthStore } from "@/store/authStore";
 
-// import Dashboard from "@/components/Dashboard";
-// import AddBook from "@/components/AddBook";
-// import StartRecommended from "@/components/StartRecommended";
-// import MyLibraryBooks from "@/components/MyLibraryBooks"; // Розкоментуєте, коли дійдете до нього
+import Dashboard from "@/components/Dashboard";
+import AddBook from "@/components/AddBook";
+import StartRecommended from "@/components/StartRecommended";
+// import MyLibraryBooks from "@/components/MyLibraryBooks";
 
 import css from "../page.module.css";
 
@@ -16,6 +16,7 @@ export default function LibraryPage() {
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
 
+  // Перевірка авторизації та редірект
   useEffect(() => {
     if (!user) {
       router.push("/login");
@@ -28,11 +29,10 @@ export default function LibraryPage() {
     <section className={css.pageSection}>
       <div className="container">
         <div className={css.pageWrapper}>
-          {/* Наша бічна панель, але вже з іншим контентом */}
-          {/* <Dashboard>
+          <Dashboard>
             <AddBook />
             <StartRecommended />
-          </Dashboard> */}
+          </Dashboard>
 
           {/* Основний контент сторінки бібліотеки */}
           {/* <MyLibraryBooks /> */}

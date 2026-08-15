@@ -20,3 +20,9 @@ export interface GetBooksParams {
   page?: number;
   limit?: number;
 }
+
+export interface AddBookRequest {
+  title: string;
+  author: string;
+  totalPages: number;
+};

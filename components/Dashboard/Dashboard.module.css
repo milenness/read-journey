@@ -1,7 +1,6 @@
 .dashboard {
     display: flex;
     flex-direction: column;
-    gap: 20px;
     border-radius: 30px;
     background-color: var(--color-black-light);
     padding: 20px;
@@ -11,7 +10,6 @@
   .dashboard {
     padding: 32px;
     flex-direction: row;
-    gap: 32px;
   }
 }
 
@@ -19,6 +17,5 @@
   .dashboard {
     padding: 40px 20px 20px 20px;
     flex-direction: column;
-    gap: 20px;
   }
 }
