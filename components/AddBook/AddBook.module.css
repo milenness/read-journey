@@ -9,7 +9,7 @@
   .filtersContainer {
   width: 295px;
   margin-bottom: 0;
-  margin-left: 32px;
+  margin-right: 32px;
 }
 }
 
@@ -133,7 +133,6 @@ line-height: 1.29;
   padding: 11px 28px;
   font-size: 16px;
 line-height: 1.13;
-
 }
 } 
 
@@ -150,4 +149,52 @@ line-height: 1.13;
 .input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+
+.likeImg {
+  display: flex;
+  font-size: 50px;
+margin-bottom: 20px;
+line-height: 1;
+margin-top: 20px;
+}
+
+@media only screen and (min-width: 768px) {
+.likeImg {
+  display: flex;
+  font-size: 68px;
+margin-bottom: 32px;
+line-height: 1.03;
+margin-top: 0;
+}
+} 
+
+.modalTitle {
+  font-size: 18px;
+line-height: 1;
+margin-bottom: 10px;
+}
+
+@media only screen and (min-width: 768px) {
+.modalTitle {
+ font-size: 20px;
+ margin-bottom: 14px;
+}
+} 
+
+.modalText {
+  color: var(--color-gray);
+  max-width: 242px;
+  margin-bottom: 20px;
+}
+
+@media only screen and (min-width: 768px) {
+.modalText {
+  margin-bottom: 0;
+}
+} 
+
+.accent {
+  color: var(--color-white);
 }

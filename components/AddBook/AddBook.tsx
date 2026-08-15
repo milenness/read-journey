@@ -4,6 +4,7 @@ import { useId, useState } from "react";
 import toast from "react-hot-toast";
 import { addBookToLibrary } from "@/lib/api";
 import Modal from "@/components/Modal/Modal";
+import Loader from "@/components/Loader/Loader";
 import css from "./AddBook.module.css";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -12,7 +13,7 @@ export default function AddBook() {
   const authorId = useId();
   const pagesId = useId();
 
-  const queryClient = useQueryClient(); 
+  const queryClient = useQueryClient();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
@@ -114,7 +115,8 @@ export default function AddBook() {
           </div>
 
           <button type="submit" className={css.submitBtn} disabled={isLoading}>
-            {isLoading ? "Adding..." : "Add book"}
+            {/* Замінили текст "Adding..." на твій компонент <Loader /> */}
+            {isLoading ? <Loader /> : "Add book"}
           </button>
         </form>
       </div>
@@ -123,12 +125,14 @@ export default function AddBook() {
         isOpen={isSuccessModalOpen}
         onClose={() => setIsSuccessModalOpen(false)}
       >
-          <h2>Good job!</h2>
-          <p>
-            Your book is now in{" "}
-            <span className={css.highlight}>the library!</span> The joy knows no
-            bounds and now you can start your training.
-          </p>
+        <span role="img" aria-label="Like" className={css.likeImg}>
+          👍
+        </span>
+        <h2 className={css.modalTitle}>Good job</h2>
+        <p className={css.modalText}>
+          Your book is now in <span className={css.accent}>the library!</span>{" "}
+          The joy knows no bounds and now you can start your training
+        </p>
       </Modal>
     </>
   );
