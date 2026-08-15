@@ -9,8 +9,8 @@ import { MdOutlineNearbyError } from "react-icons/md";
 
 
 import { getRecommendedBooks } from "@/lib/api";
-import Book from "@/components/Book/Book";
-import Loader from "@/components/Loader/Loader";
+import Book from "@/components/Book";
+import Loader from "@/components/Loader";
 import css from "./RecommendedBooks.module.css";
 
 export default function RecommendedBooks() {

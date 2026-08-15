@@ -22,7 +22,6 @@ flex: 1;
 .headerWrapper {
 display: flex;
 justify-content: space-between;
- margin-bottom: 22px;
 }
 
 .title {
@@ -32,18 +31,21 @@ justify-content: space-between;
 }
 
 @media screen and (min-width: 768px) {
-.headerWrapper {
- margin-bottom: 20px;
-}
-
   .title {
     font-size: 28px;
   }
 }
 
-.pagination {
+.select {
   display: flex;
   gap: 8px;
+  margin-bottom: 22px;
+}
+
+@media screen and (min-width: 768px) {
+  .pagination {
+  margin-bottom: 20px;
+}
 }
 
 .pageBtn {

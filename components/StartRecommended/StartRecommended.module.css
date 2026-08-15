@@ -119,13 +119,14 @@ transition: color var(--main-transition);
 }
 
 .modalTitle {
-  width: 350px; 
+  width: 242px; 
   font-size: 18px;
   margin-bottom: 2px;
 }
 
 @media only screen and (min-width: 768px) {
  .modalTitle {
+   width: 350px;
  font-size: 20px;
 line-height: 1;
 }

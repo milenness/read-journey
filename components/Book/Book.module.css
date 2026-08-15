@@ -3,6 +3,26 @@
   cursor: pointer;
 }
 
+.infoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+@media only screen and (min-width: 768px) {
+.infoContainer {
+ gap: 20px;
+}
+}
+
+.bookInfo {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex-grow: 1;
+}
+
 .bookImage {
     border-radius: 8px;
     margin-bottom: 8px;
@@ -43,8 +63,7 @@ white-space: nowrap;
 }
 
 .modalTitle {
-   width: 100%;
-  max-width: 350px; 
+  width: 242px; 
   font-size: 18px;
   margin-bottom: 2px;
 }
@@ -53,6 +72,7 @@ white-space: nowrap;
  .modalTitle {
  font-size: 20px;
 line-height: 1;
+width: 350px; 
 }
 }
 

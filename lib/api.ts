@@ -108,3 +108,14 @@ export const addRecommendedBookById = async (id: string) => {
   const res = await axios.post(`/books/add/${id}`);
   return res.data;
 };
+
+export const getMyLibraryBooks = async (status?: string) => {
+  const params = status ? { status } : {};
+  const { data } = await axios.get("/books/own", { params });
+  return data;
+};
+
+export const removeBookFromLibrary = async (id: string) => {
+  const res = await axios.delete(`/books/remove/${id}`);
+  return res.data;
+};
