@@ -9,6 +9,7 @@ import Modal from "@/components/Modal";
 import Loader from "@/components/Loader/Loader";
 import css from "./Book.module.css";
 import { IBook } from "@/types/book";
+import { RiDeleteBinLine } from "react-icons/ri";
 
 interface BookProps {
   data: IBook;
@@ -53,7 +54,6 @@ export default function Book({ data, showDeleteBtn, onDelete }: BookProps) {
   });
 
   const handleStartReading = () => {
-    // Тут ти можеш прописати логіку переходу на сторінку читання або відкриття іншої модалки
     toast.success(`Starting to read "${formattedTitle}"!`);
     setIsModalOpen(false);
   };
@@ -80,12 +80,16 @@ export default function Book({ data, showDeleteBtn, onDelete }: BookProps) {
           </div>
           {showDeleteBtn && (
             <button
+              type="button"
               className={css.deleteBtn}
               onClick={(e) => {
                 e.stopPropagation();
+                e.preventDefault();
                 onDelete?.(_id);
               }}
-            />
+            >
+              <RiDeleteBinLine size={14} />
+            </button>
           )}
         </div>
       </li>
@@ -108,7 +112,6 @@ export default function Book({ data, showDeleteBtn, onDelete }: BookProps) {
 
         <span className={css.modalPages}>{totalPages} pages</span>
 
-   
         {showDeleteBtn ? (
           <button
             className={css.addButton}

@@ -2,7 +2,11 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { addRecommendedBookById } from "@/lib/api";
 import Modal from "@/components/Modal";
+import Loader from "@/components/Loader/Loader";
 import css from "./StartRecommended.module.css";
 import { IBook } from "@/types/book";
 
@@ -22,9 +26,23 @@ const formatTitle = (text: string) => {
 };
 
 export default function StartBook({ data }: StartBookProps) {
-  const { title, author, imageUrl, totalPages } = data;
+  const { _id, title, author, imageUrl, totalPages } = data;
+  const queryClient = useQueryClient();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const formattedTitle = formatTitle(title);
+
+  const { mutate: addToLibrary, isPending: isAdding } = useMutation({
+    mutationFn: () => addRecommendedBookById(_id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["libraryBooks"] });
+      toast.success("Book was successfully added to your library!");
+      setIsModalOpen(false);
+    },
+    onError: () => {
+      toast.error("Failed to add the book or it is already in your library.");
+    },
+  });
 
   return (
     <>
@@ -54,6 +72,7 @@ export default function StartBook({ data }: StartBookProps) {
           width={137}
           height={208}
           className={css.modalImage}
+          unoptimized
         />
         <h2 className={css.modalTitle} title={formattedTitle}>
           {formattedTitle}
@@ -62,8 +81,13 @@ export default function StartBook({ data }: StartBookProps) {
           {author}
         </h3>
         <span className={css.modalPages}>{totalPages} pages</span>
-        <button className={css.addButton} type="button">
-          Add to library
+        <button
+          className={css.addButton}
+          type="button"
+          onClick={() => addToLibrary()}
+          disabled={isAdding}
+        >
+          {isAdding ? <Loader /> : "Add to library"}
         </button>
       </Modal>
     </>

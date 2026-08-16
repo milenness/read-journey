@@ -131,3 +131,14 @@ background-color: var(--color-white);
 border-color: var(--color-white);
 color: var(--color-black-light);
 }
+.deleteBtn {
+  border-radius: 100%;
+background-color: rgba(232, 80, 80, 0.1);
+border: 1px solid rgba(232, 80, 80, 0.2);
+display: flex;
+align-items: center;
+justify-content: center;
+width: 28px;
+height: 28px;
+color: var(--color-red);
+}

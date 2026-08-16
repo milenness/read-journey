@@ -22,6 +22,7 @@ flex: 1;
 .headerWrapper {
 display: flex;
 justify-content: space-between;
+margin-bottom: 24px;
 }
 
 .title {
@@ -39,38 +40,8 @@ justify-content: space-between;
 .select {
   display: flex;
   gap: 8px;
-  margin-bottom: 22px;
 }
 
-@media screen and (min-width: 768px) {
-  .pagination {
-  margin-bottom: 20px;
-}
-}
-
-.pageBtn {
-  width: 40px;
-height: 40px;
-border-radius: 100%;
-border: 1px solid rgba(249, 249, 249, 0.2);
-display: flex;
-align-items: center;
-justify-content: center;
-background-color: transparent;
-}
-
-.pageBtn:disabled {
-  cursor: default;
-}
-
-.arrow {
-  color: var(--color-white);
-  transition: color var(--main-transition);
-}
-
-.pageBtn:disabled .arrow {
-  color: rgba(249, 249, 249, 0.2);
-}
 .booksList {
   display: flex;
   flex-wrap: wrap;
@@ -90,16 +61,126 @@ background-color: transparent;
 }
 }
 
-.errorStub {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 10px;
-  padding: 160px 0;
+.noBlock {
+ padding: 72px 0 160px 0;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+}
+
+.booksImg {
+  font-size: 50px;
+line-height: 1;
+width: 100px;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 25px;
+margin-bottom: 10px;
+border-radius: 100%;
+background-color: var(--color-gray-dark);
+}
+
+@media screen and (min-width: 768px) {
+.booksImg {
+  font-size: 70px;
+width: 130px;
+padding: 30px;
+margin-bottom: 20px;
+}
 }
 
 .noText {
-  font-size: 16px;
+  max-width: 197px;
+  text-align: center;
+}
+
+@media screen and (min-width: 768px) {
+.noText {
+  max-width: 274px;
+  text-align: center;
+}
+}
+
+.accent {
+  color:var(--color-gray);
+}
+
+.filterWrapper {
+  position: relative;
+  width: 120px;
+}
+
+@media screen and (min-width: 768px) {
+.filterWrapper {
+  width: 153px;
+}
+}
+
+.selectToggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 14px;
+  background-color: transparent;
+  border: 1px solid #3e3e3e;
+  border-radius: 12px;
+  font-size: 12px;
+line-height: 1.33;
+color: var(--color-white);
+  transition: border-color var(--main-transition);
+}
+
+.selectToggle:hover,
+.selectToggle.open {
+  border-color: var(--color-white);
+}
+
+@media screen and (min-width: 768px) {
+.selectToggle {
+font-size: 14px;
+line-height: 1.29;
+}
+}
+
+.dropdownList {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  width: 100%;
+  background-color: var(--color-gray-dark);
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  border-radius: 12px;
+  overflow: hidden;
+  z-index: 10;
+ padding: 14px;
+}
+
+@media screen and (min-width: 768px) {
+.dropdownList {
+  top: calc(100% + 8px);
+}
+}
+
+.dropdownItem {
+  font-size: 12px;
+line-height: 1.33;
+  color: var(--color-gray);
+  cursor: pointer;
+  transition: color var(--main-transition);
+}
+
+.dropdownItem:hover,
+.dropdownItem.active {
+  color: var(--color-white);
+}
+
+@media screen and (min-width: 768px) {
+.dropdownItem {
+  font-size: 14px;
+line-height: 1.29;
+}
 }

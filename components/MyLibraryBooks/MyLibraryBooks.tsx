@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { TbBooksOff } from "react-icons/tb";
 import { MdOutlineNearbyError } from "react-icons/md";
+import { HiChevronDown, HiChevronUp } from "react-icons/hi2";
 import toast from "react-hot-toast";
 
 import { getMyLibraryBooks, removeBookFromLibrary } from "@/lib/api";
@@ -12,9 +12,18 @@ import Loader from "@/components/Loader/Loader";
 import { IBook } from "@/types/book";
 import css from "./MyLibraryBooks.module.css";
 
+const options = [
+  { value: "", label: "All books" },
+  { value: "unread", label: "Unread" },
+  { value: "in-progress", label: "In progress" },
+  { value: "done", label: "Done" },
+];
+
 export default function MyLibraryBooks() {
   const queryClient = useQueryClient();
   const [status, setStatus] = useState<string>("");
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const {
     data: books = [],
@@ -49,22 +58,58 @@ export default function MyLibraryBooks() {
     deleteBook(id);
   };
 
+  // Закриття випадаючого списку при кліку за межами компонента
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const selectedOptionLabel =
+    options.find((opt) => opt.value === status)?.label || "All books";
+
   return (
     <div className={css.wrapper}>
       <div className={css.headerWrapper}>
         <h2 className={css.title}>My library</h2>
 
-        <div className={css.filterWrapper}>
-          <select
-            className={css.select}
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
+        <div className={css.filterWrapper} ref={dropdownRef}>
+          <button
+            type="button"
+            className={`${css.selectToggle} ${isOpen ? css.open : ""}`}
+            onClick={() => setIsOpen((prev) => !prev)}
           >
-            <option value="">All books</option>
-            <option value="unread">Unread</option>
-            <option value="in-progress">In progress</option>
-            <option value="done">Done</option>
-          </select>
+            <span>{selectedOptionLabel}</span>
+            {isOpen ? <HiChevronUp size={16} /> : <HiChevronDown size={16} />}
+          </button>
+
+          {isOpen && (
+            <ul className={css.dropdownList}>
+              {options.map((option) => (
+                <li
+                  key={option.value}
+                  className={`${css.dropdownItem} ${
+                    status === option.value ? css.active : ""
+                  }`}
+                  onClick={() => {
+                    setStatus(option.value);
+                    setIsOpen(false);
+                  }}
+                >
+                  {option.label}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
 
@@ -93,9 +138,15 @@ export default function MyLibraryBooks() {
       )}
 
       {!isLoading && !isError && uniqueBooks.length === 0 && (
-        <div className={css.errorStub}>
-          <TbBooksOff className={css.errorIcon} size={100} />
-          <p className={css.noText}>No books found in your library.</p>
+        <div className={css.noBlock}>
+          <span role="img" aria-label="Books" className={css.booksImg}>
+            📚
+          </span>
+          <p className={css.noText}>
+            To start training, add{" "}
+            <span className={css.accent}>some of your books </span>or from the
+            recommended ones
+          </p>
         </div>
       )}
     </div>
