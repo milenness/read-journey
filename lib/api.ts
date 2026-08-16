@@ -1,6 +1,14 @@
 import axios from "axios";
 import { useAuthStore } from "@/store/authStore";
-import { IBooksResponse, GetBooksParams, AddBookRequest } from "@/types/book";
+import {
+  IBooksResponse,
+  GetBooksParams,
+  AddBookRequest,
+  IBook,
+  StartReadingRequest,
+  FinishReadingRequest,
+  DeleteReadingParams,
+} from "@/types/book";
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -117,5 +125,25 @@ export const getMyLibraryBooks = async (status?: string) => {
 
 export const removeBookFromLibrary = async (id: string) => {
   const res = await axios.delete(`/books/remove/${id}`);
+  return res.data;
+};
+
+export const getBookById = async (id: string): Promise<IBook> => {
+  const { data } = await axios.get<IBook>(`/books/${id}`);
+  return data;
+};
+
+export const startReading = async (data: StartReadingRequest) => {
+  const res = await axios.post("/books/reading/start", data);
+  return res.data;
+};
+
+export const finishReading = async (data: FinishReadingRequest) => {
+  const res = await axios.post("/books/reading/finish", data);
+  return res.data;
+};
+
+export const deleteReading = async (params: DeleteReadingParams) => {
+  const res = await axios.delete("/books/reading", { params });
   return res.data;
 };

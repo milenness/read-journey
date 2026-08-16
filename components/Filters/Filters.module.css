@@ -117,7 +117,7 @@ line-height: 1.29;
 
 .submitBtn {
     width: fit-content;
-  padding: 10px 20px;
+  padding: 9px 20px;
   border-radius: 30px;
   background-color: transparent;
   color: var(--color-white);
