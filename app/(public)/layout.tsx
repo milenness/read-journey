@@ -1,6 +1,13 @@
-import ScreenBlock from "@/components/ScreenBlock/ScreenBlock";
+import type { Metadata } from "next";
+import ScreenBlock from "@/components/ScreenBlock";
 import css from "./page.module.css";
 import LogoLink from "@/components/Logo/Logo";
+
+export const metadata: Metadata = {
+  title: "Welcome to ReadJourney",
+  description:
+    "Log in or create an account to start tracking your reading progress, manage your personal library, and explore new books.",
+};
 
 export default function PublicLayout({
   children,

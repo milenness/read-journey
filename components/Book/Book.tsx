@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation"; // 👈 Імпортуємо роутер
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { addRecommendedBookById } from "@/lib/api";
@@ -35,6 +36,7 @@ const formatTitle = (text: string) => {
 export default function Book({ data, showDeleteBtn, onDelete }: BookProps) {
   const { _id, title, author, imageUrl, totalPages } = data;
   const queryClient = useQueryClient();
+  const router = useRouter(); // 👈 Ініціалізуємо роутер
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -54,8 +56,11 @@ export default function Book({ data, showDeleteBtn, onDelete }: BookProps) {
   });
 
   const handleStartReading = () => {
-    toast.success(`Starting to read "${formattedTitle}"!`);
     setIsModalOpen(false);
+    // Перенаправляємо на сторінку читання.
+    // Якщо тобі потрібно передавати ID книги в URL (наприклад /library/reading?id=... або /library/reading/[id]),
+    // зміни шлях нижче відповідно до роутингу, який ви робите:
+    router.push(`/library/reading`);
   };
 
   return (

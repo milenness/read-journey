@@ -70,7 +70,7 @@ export default function RootLayout({
       <body className={`${gilroy.variable} ${sfProText.variable}`}>
         <QueryProvider>{children}</QueryProvider>
         <Toaster
-          position="top-center"
+          position="top-right"
           toastOptions={{
             style: {
               fontSize: "16px",
