@@ -7,6 +7,7 @@ import { useAuthStore } from "@/store/authStore";
 import Dashboard from "@/components/Dashboard";
 // Поки що ці компоненти ми створимо на наступних кроках:
 import AddReading from "@/components/AddReading";
+import Progress from "@/components/Progress";
 // import MyBook from "@/components/MyBook";
 
 import css from "@/app/(private)/page.module.css";
@@ -29,6 +30,7 @@ export default function ReadingPage() {
         <div className={css.pageWrapper}>
           <Dashboard>
             <AddReading />
+            <Progress/>
           </Dashboard>
 
           {/* Тут буде основний блок з інформацією про книгу, станом та статистикою/щоденником */}
