@@ -3,6 +3,7 @@
 import { useId, useState } from "react";
 import toast from "react-hot-toast";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import Loader from "@/components/Loader/Loader";
 import Modal from "@/components/Modal/Modal";
@@ -13,6 +14,8 @@ import css from "./AddReading.module.css";
 export default function AddReading() {
   const pageInputId = useId();
   const queryClient = useQueryClient();
+  const searchParams = useSearchParams();
+  const bookIdFromUrl = searchParams.get("id");
 
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
@@ -26,14 +29,18 @@ export default function AddReading() {
     ? booksResponse
     : booksResponse?.results || [];
 
-  const currentBook = books.find((b) => b.status === "in-progress") || books[0];
+  const currentBook = bookIdFromUrl
+    ? books.find((b) => b._id === bookIdFromUrl)
+    : books.find((b) => b.status === "in-progress") || books[0];
 
   const bookId = currentBook?._id;
-  const status = currentBook?.status || "unread";
   const totalPages = currentBook?.totalPages || 0;
   const progress = currentBook?.progress || [];
 
-  const isReadingActive = status === "in-progress";
+  const activeSession = progress.find(
+    (p) => p.finishPage === undefined || p.finishPage === null,
+  );
+  const isReadingActive = Boolean(activeSession);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -58,9 +65,7 @@ export default function AddReading() {
       return;
     }
 
-    // Якщо активне читання (зупиняємось), перевіряємо, щоб finishPage не була меншою за останню startPage
-    if (isReadingActive && progress.length > 0) {
-      const activeSession = progress[progress.length - 1];
+    if (isReadingActive) {
       const startPage = activeSession?.startPage || 1;
 
       if (page < startPage) {
@@ -75,15 +80,12 @@ export default function AddReading() {
       setIsLoading(true);
 
       if (!isReadingActive) {
-        // Запит на старт читання
         await startReading({ id: bookId, page });
         toast.success("Reading session started successfully!");
       } else {
-        // Запит на зупинку читання
         await finishReading({ id: bookId, page });
         toast.success("Reading session stopped.");
 
-        // Якщо сторінка співпадає з загальною кількістю — відкриваємо модалку успіху
         if (page === totalPages) {
           setIsSuccessModalOpen(true);
         }

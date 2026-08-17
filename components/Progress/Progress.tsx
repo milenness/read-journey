@@ -19,7 +19,6 @@ export default function Progress() {
 
   const [activeTab, setActiveTab] = useState<"diary" | "statistics">("diary");
 
-  // Отримуємо список книг з бібліотеки
   const { data: booksResponse, isLoading } = useQuery({
     queryKey: ["libraryBooks"],
     queryFn: () => getMyLibraryBooks(),
@@ -29,19 +28,16 @@ export default function Progress() {
     ? booksResponse
     : booksResponse?.results || [];
 
-  // Шукаємо книгу за ID з URL, або активну, або першу
-  const currentBook =
-    books.find((b) => b._id === bookIdFromUrl) ||
-    books.find((b) => b.status === "in-progress") ||
-    books[0];
+  const currentBook = bookIdFromUrl
+    ? books.find((b) => b._id === bookIdFromUrl)
+    : books.find((b) => b.status === "in-progress") || books[0];
 
   const progress = currentBook?.progress || [];
   const totalPages = currentBook?.totalPages || 0;
+  const timeLeftToRead = currentBook?.timeLeftToRead;
 
-  // Функція видалення сесії читання
   const handleDeleteReading = async (readingId: string) => {
     if (!currentBook) return;
-
     try {
       await deleteReading({ bookId: currentBook._id, readingId });
       toast.success("Reading record deleted successfully!");
@@ -63,7 +59,6 @@ export default function Progress() {
     );
   }
 
-  // Якщо немає записів читання
   if (!progress || progress.length === 0) {
     return (
       <div className={css.noProgressBlock}>
@@ -79,15 +74,16 @@ export default function Progress() {
     );
   }
 
-  // Підрахунок загальної кількості прочитаних сторінок
   const totalReadPages = progress.reduce(
     (acc, item) =>
       acc + (item.finishPage ? item.finishPage - item.startPage : 0),
     0,
   );
-  const percentage = totalPages
-    ? Math.round((totalReadPages / totalPages) * 100)
-    : 0;
+  const percentageNum = totalPages ? (totalReadPages / totalPages) * 100 : 0;
+  const percentageStr = percentageNum.toFixed(
+    percentageNum < 10 && percentageNum > 0 ? 2 : 0,
+  );
+  const sortedProgress = [...progress].reverse();
 
   return (
     <div className={css.progressBlock}>
@@ -98,7 +94,7 @@ export default function Progress() {
         <div className={css.tabsIcons}>
           <button
             type="button"
-            className={`${css.iconBtn} ${activeTab === "diary" ? css.active : ""}`}
+            className={`${css.iconBtn} ${activeTab === "diary" ? css.activeTabBtn : ""}`}
             onClick={() => setActiveTab("diary")}
             title="Diary"
           >
@@ -106,7 +102,7 @@ export default function Progress() {
           </button>
           <button
             type="button"
-            className={`${css.iconBtn} ${activeTab === "statistics" ? css.active : ""}`}
+            className={`${css.iconBtn} ${activeTab === "statistics" ? css.activeTabBtn : ""}`}
             onClick={() => setActiveTab("statistics")}
             title="Statistics"
           >
@@ -118,7 +114,7 @@ export default function Progress() {
       {activeTab === "diary" && (
         <div className={css.diaryContainer}>
           <ul className={css.diaryList}>
-            {progress.map((item, index) => {
+            {sortedProgress.map((item, index) => {
               const pagesRead = item.finishPage
                 ? item.finishPage - item.startPage
                 : 0;
@@ -128,8 +124,15 @@ export default function Progress() {
               const dateStr = item.finishReading
                 ? new Date(item.finishReading).toLocaleDateString("uk-UA")
                 : "In progress";
-
-              // Перший елемент списку (або найсвіжіший) робимо активним (білий фон + чорний квадрат)
+              let readingMinutes = 0;
+              if (item.startReading && item.finishReading) {
+                const startTime = new Date(item.startReading).getTime();
+                const finishTime = new Date(item.finishReading).getTime();
+                readingMinutes =
+                  !isNaN(startTime) && !isNaN(finishTime)
+                    ? Math.round((finishTime - startTime) / (1000 * 60))
+                    : 0;
+              }
               const isActive = index === 0;
 
               return (
@@ -137,21 +140,20 @@ export default function Progress() {
                   key={item._id || index}
                   className={`${css.diaryItem} ${isActive ? css.active : ""}`}
                 >
-                  {/* Кастомний маркер згідно з твоїм скріншотом (активний / сірий) */}
                   <div className={css.customPoint}>
                     <div className={css.customSquare}></div>
                   </div>
-
                   <div className={css.diaryItemLeft}>
                     <span className={css.dateText}>{dateStr}</span>
                     <span className={css.percentText}>{itemPercent}%</span>
+                    <span className={css.minutesText}>
+                      {readingMinutes > 0 ? `${readingMinutes} minutes` : ""}
+                    </span>
                   </div>
-
                   <div className={css.diaryItemRight}>
                     <span className={css.pagesCount}>{pagesRead} pages</span>
                     <div className={css.speedBinWrapper}>
                       <div className={css.speedWrapper}>
-                        {/* Одна універсальна SVG, розмір якої управляється в CSS */}
                         <svg
                           className={css.speedSvg}
                           viewBox="0 0 60 25"
@@ -171,14 +173,12 @@ export default function Progress() {
                             fill="#30B94D"
                           />
                         </svg>
-
                         {item.speed && (
                           <span className={css.speedText}>
-                            {item.speed} pages per hour
+                            {item.speed} pages <br /> per hour
                           </span>
                         )}
                       </div>
-
                       {item._id && (
                         <button
                           type="button"
@@ -186,7 +186,7 @@ export default function Progress() {
                           onClick={() => handleDeleteReading(item._id!)}
                           aria-label="Delete reading session"
                         >
-                          <RiDeleteBinLine size={14} />
+                          <RiDeleteBinLine className={css.binIcon} size={14} />
                         </button>
                       )}
                     </div>
@@ -207,24 +207,62 @@ export default function Progress() {
           </p>
 
           <div className={css.chartWrapper}>
-            <div
-              className={css.circleProgress}
-              style={{
-                background: `conic-gradient(var(--color-green, #20ad96) ${percentage * 3.6}deg, #2a2a2a 0deg)`,
-              }}
-            >
+            <div className={css.circleProgressWrapper}>
+              <svg
+                className={css.circleSvg}
+                viewBox="0 0 116 116"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                {/* Сіре фонове кільце */}
+                <circle
+                  cx="58"
+                  cy="58"
+                  r="50"
+                  stroke="#1F1F1F"
+                  strokeWidth="10"
+                  fill="none"
+                />
+
+                {/* Зелений повзунок із закругленими кінцями */}
+                <circle
+                  cx="58"
+                  cy="58"
+                  r="50"
+                  stroke="#30B94D"
+                  strokeWidth="10"
+                  fill="none"
+                  strokeDasharray={2 * Math.PI * 50}
+                  strokeDashoffset={
+                    2 * Math.PI * 50 * (1 - percentageNum / 100)
+                  }
+                  strokeLinecap="round"
+                  transform="rotate(-90 58 58)"
+                  style={{ transition: "stroke-dashoffset 0.6s ease" }}
+                />
+              </svg>
+
               <div className={css.circleInner}>
-                <span className={css.circlePercent}>{percentage}%</span>
+                <span className={css.circlePercent}>100%</span>
               </div>
             </div>
 
             <div className={css.statsFooter}>
               <span className={css.greenDot}></span>
-              <span className={css.statsPagesRead}>
-                {percentage}%{" "}
+              <div className={css.statsPagesRead}>
+                <span className={css.statsPagesPercentage}>
+                  {percentageStr}%
+                </span>{" "}
                 <span className={css.subText}>{totalReadPages} pages read</span>
-              </span>
+              </div>
             </div>
+
+            {timeLeftToRead && (
+              <div className={css.timeLeftStats}>
+                Time left: {timeLeftToRead.hours} hours and{" "}
+                {timeLeftToRead.minutes} minutes
+              </div>
+            )}
           </div>
         </div>
       )}

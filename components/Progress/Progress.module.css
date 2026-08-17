@@ -18,7 +18,6 @@ font-size: 20px;
 }
 }
 
-
 @media only screen and (min-width: 1440px) {
   .noProgressBlock {
    padding-bottom: 183px; 
@@ -49,7 +48,7 @@ font-size: 20px;
 line-height: 1;
 display: flex;
 padding: 24px;
-align-items:center;
+align-items: center;
 justify-content: center;
 border-radius: 100%;
 background-color: var(--color-gray-dark);
@@ -66,7 +65,6 @@ width: 100px;
 }
 }
 
-
 .headerRow {
   margin-bottom: 20px;
   display: flex;
@@ -82,12 +80,12 @@ width: 100px;
 
 .titleProgress {
   font-size: 18px;
-line-height: 1;
+  line-height: 1;
 }
 
 @media only screen and (min-width: 768px) {
  .titleProgress {
-font-size: 20px;
+   font-size: 20px;
 }
 }
 
@@ -99,17 +97,51 @@ font-size: 20px;
 .iconBtn {
   display: flex;
   background-color: transparent;
-color: var(--color-gray);
-padding: 0;
+  color: var(--color-gray);
+  padding: 0;
 }
 
-.active {
+.activeTabBtn {
   color: var(--color-white);
 }
 
 .diaryContainer {
   padding: 16px;
   background-color: var(--color-gray-dark);
+  border-radius: 12px;
+  max-height: 211px;
+  overflow-y: auto;
+}
+
+@media only screen and (min-width: 768px) {
+.diaryContainer {
+  max-height: 252px;
+  width: 321px;
+}
+}
+
+@media only screen and (min-width: 1440px) {
+.diaryContainer {
+  height: 373px;
+  width: 313px;
+}
+}
+
+.diaryList::-webkit-scrollbar {
+  width: 6px;
+}
+
+.diaryList::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.diaryList::-webkit-scrollbar-thumb {
+  background-color: var(--color-black-light, #3e3e3e);
+  border-radius: 4px;
+}
+
+.diaryList::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-gray, #888);
 }
 
 .diaryList {
@@ -119,19 +151,385 @@ padding: 0;
   position: relative;
 }
 
+@media only screen and (min-width: 768px) {
+.diaryList {
+  gap: 14px;
+}
+}
+
+@media only screen and (min-width: 1440px) {
+.diaryList {
+  gap: 22px;
+}
+}
+
 .diaryList::before {
   content: "";
   position: absolute;
-  top: 0;
+  z-index: 0;
   bottom: 0;
   left: 7px;
+  top: 5px;
   width: 2px;
-  background-color: var(--color-white);
+  background-color: var(--color-black-light);
   border-radius: 2px;
 }
 
 @media only screen and (min-width: 768px) {
  .diaryList::before {
-left: 9px;
+    left: 9px;
+  }
 }
+
+.diaryItem {
+  display: flex;
+  position: relative;
+  z-index: 1;
+}
+.customPoint {
+  position: relative;
+  border-radius: 4px;
+  width: 16px;
+  height: 16px;
+  padding: 4px;
+  background-color: var(--color-gray);
+  margin-right: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media only screen and (min-width: 768px) {
+.customPoint {
+  width: 20px;
+  height: 20px;
+   margin-right: 10px;
+}
+}
+
+.customSquare {
+  border-radius: 2px;
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-black-light);
+}
+
+@media only screen and (min-width: 768px) {
+.customSquare {
+  width: 12px;
+  height: 12px;
+}
+}
+
+.diaryItem.active .dateText {
+  color: var(--color-white); 
+}
+
+.diaryItem.active .customPoint {
+  background-color: var(--color-white); 
+}
+
+.diaryItem.active .customSquare {
+  background-color: var(--color-black);
+}
+
+.diaryItemLeft {
+  display: flex;
+  flex-direction: column;
+  margin-right: auto;
+}
+
+.dateText {
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1.33;
+  margin-bottom: 17px;
+  color: var(--color-gray);
+}
+
+@media only screen and (min-width: 768px) {
+.dateText {
+  font-size: 16px;
+}
+}
+
+@media only screen and (min-width: 1440px) {
+.dateText {
+ margin-bottom: 28px;
+}
+}
+
+.percentText {
+  margin-bottom: 4px;
+}
+
+@media only screen and (min-width: 768px) {
+.percentText {
+  font-size: 20px;
+line-height: 1;
+  margin-bottom: 8px;
+}
+}
+
+.minutesText {
+  font-size: 10px;
+line-height: 1.2;
+  color: var(--color-gray);
+}
+
+@media only screen and (min-width: 768px) {
+.minutesText {
+  font-size: 12px;
+line-height: 1.17;
+}
+}
+
+.diaryItemRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.pagesCount {
+  font-size: 12px;
+  line-height: 1.33;
+  color: var(--color-gray);
+  margin-bottom: 16px;
+}
+
+@media only screen and (min-width: 768px) {
+.pagesCount {
+  font-size: 14px;
+  line-height: 1.29;
+  margin-bottom: 18px;
+  padding-left: 1px;
+}
+}
+
+@media only screen and (min-width:1440px) {
+.pagesCount {
+  margin-bottom: 30px;
+}
+}
+
+.speedBinWrapper {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+}
+
+@media only screen and (min-width:768px) {
+.speedBinWrapper {
+  gap: 8px;
+}
+}
+
+.speedWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+}
+
+.speedSvg {
+  width: 43px;
+}
+
+@media only screen and (min-width:768px) {
+.speedSvg {
+  width: 59px;
+}
+}
+
+.speedText {
+  font-size: 10px;
+  line-height: 1.2;
+  color: var(--color-gray);
+}
+
+@media only screen and (min-width:768px) {
+.speedText {
+  font-size: 12px;
+line-height: 1.17;
+}
+}
+
+.deleteReadingBtn {
+  padding: 2px 0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+@media only screen and (min-width:768px) {
+.deleteReadingBtn {
+  padding: 6px 0;
+}
+}
+
+.binIcon {
+  color: var(--color-gray);
+}
+
+.statisticsContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+@media only screen and (min-width:768px) {
+.statisticsContainer {
+  width: 321px;
+}
+}
+
+@media only screen and (min-width:1440px) {
+.statisticsContainer {
+  width: 313px;
+}
+}
+
+.statsDescription {
+  display: none;
+}
+
+@media only screen and (min-width:1440px) {
+.statsDescription {
+  display: flex;
+  color: var(--color-gray);
+  margin-bottom: 20px;
+  max-width: 293px;
+}
+}
+
+.chartWrapper {
+   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 12px;
+background-color: var(--color-gray-dark);
+}
+
+@media only screen and (min-width:768px) {
+.chartWrapper {
+   padding: 28px;
+}
+}
+
+@media only screen and (min-width:1440px) {
+.chartWrapper {
+   padding: 20px;
+}
+}
+
+.circleProgressWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.circleSvg {
+  width: 116px;
+  height: 116px;
+}
+
+@media screen and (min-width: 768px) {
+  .circleSvg {
+    width: 138px;
+    height: 138px;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .circleSvg {
+    width: 189px;
+    height: 189px;
+  }
+}
+
+.circleInner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.circlePercent {
+  font-weight: 700;
+font-size: 18px;
+line-height: 1.11;
+}
+
+@media screen and (min-width: 768px) {
+  .circlePercent {
+  font-size: 20px;
+line-height: 1;
+  }
+}
+
+.statsFooter {
+  display: flex;
+  gap: 15px;
+  margin-top: 21px;
+}
+
+@media screen and (min-width: 768px) {
+.statsFooter {
+  margin-top: 16px;
+}
+}
+
+@media screen and (min-width: 1440px) {
+.statsFooter {
+  margin-top: 19.9px;
+}
+}
+
+.greenDot {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  background-color: var(--color-green);
+}
+
+.statsPagesRead {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+@media screen and (min-width: 768px) {
+.statsPagesRead {
+  gap: 8px;
+}
+
+.statsPagesPercentage{
+  font-size: 20px;
+line-height: 1;
+}
+}
+
+.subText {
+  color: var(--color-gray);
+  font-size: 10px;
+line-height: 1.2;
+}
+
+@media screen and (min-width: 768px) {
+.subText {
+  font-size: 12px;
+line-height: 1.17;
+}
+}
+
+
+.timeLeftStats {
+  font-size: 12px;
+  color: #888;
+  margin-top: 8px;
 }

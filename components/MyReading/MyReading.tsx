@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 import { getMyLibraryBooks } from "@/lib/api";
 import { IBook } from "@/types/book";
 import Loader from "@/components/Loader/Loader";
@@ -12,6 +13,7 @@ export default function MyReading() {
   const searchParams = useSearchParams();
   const bookIdFromUrl = searchParams.get("id");
 
+  // Отримуємо список книг з бібліотеки
   const { data: booksResponse, isLoading: isBooksLoading } = useQuery({
     queryKey: ["libraryBooks"],
     queryFn: () => getMyLibraryBooks(),
@@ -21,11 +23,9 @@ export default function MyReading() {
     ? booksResponse
     : booksResponse?.results || [];
 
-  // Шукаємо книгу за ID з URL, або активну, або першу
-  const currentBook =
-    books.find((b) => b._id === bookIdFromUrl) ||
-    books.find((b) => b.status === "in-progress") ||
-    books[0];
+  const currentBook = bookIdFromUrl
+    ? books.find((b) => b._id === bookIdFromUrl)
+    : books.find((b) => b.status === "in-progress") || books[0];
 
   if (isBooksLoading) {
     return (
@@ -49,13 +49,43 @@ export default function MyReading() {
     );
   }
 
-  const { title, author, imageUrl, status, timeLeftToRead } = currentBook;
-  const isReadingActive = status === "in-progress";
+  const {
+    title,
+    author,
+    imageUrl,
+    progress = [],
+    timeLeftToRead,
+  } = currentBook;
 
-  // Форматуємо час, що залишився (якщо він є)
+  // 🎯 Визначаємо активність так само надійно, як і у формі (за наявністю незавершеного сеансу)
+  const activeSession = progress.find(
+    (p) => p.finishPage === undefined || p.finishPage === null,
+  );
+  const isReadingActive = Boolean(activeSession);
+
   const timeText = timeLeftToRead
     ? `${timeLeftToRead.hours} hours and ${timeLeftToRead.minutes} minutes left`
     : null;
+
+  // При кліку на круглу кнопку сабмітимо форму зліва
+  const handleActionClick = () => {
+    const pageInput = document.querySelector(
+      'input[name="page"]',
+    ) as HTMLInputElement;
+    const form = document.querySelector("form");
+
+    if (!pageInput || !pageInput.value.trim()) {
+      toast.error("Please enter a page number first!");
+      pageInput?.focus();
+      return;
+    }
+
+    if (form) {
+      form.requestSubmit();
+    } else {
+      toast.error("Reading form not found on the page.");
+    }
+  };
 
   return (
     <div className={css.wrapper}>
@@ -71,6 +101,7 @@ export default function MyReading() {
             alt={title}
             width={137}
             height={208}
+            loading="eager"
             className={css.bookImage}
             unoptimized
           />
@@ -83,9 +114,14 @@ export default function MyReading() {
           {author}
         </h4>
 
+        {/* Кнопка тепер миттєво змінює стан залежно від наявності активної сесії */}
         <div
+          onClick={handleActionClick}
           className={`${css.actionButton} ${isReadingActive ? css.stopActive : ""}`}
-          title={isReadingActive ? "Reading in progress" : "Reading stopped"}
+          style={{ cursor: "pointer" }}
+          title={
+            isReadingActive ? "Click to stop reading" : "Click to start reading"
+          }
         >
           <span className={isReadingActive ? css.stopIcon : css.playIcon} />
         </div>
