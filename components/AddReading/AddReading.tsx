@@ -31,6 +31,7 @@ export default function AddReading() {
   const bookId = currentBook?._id;
   const status = currentBook?.status || "unread";
   const totalPages = currentBook?.totalPages || 0;
+  const progress = currentBook?.progress || [];
 
   const isReadingActive = status === "in-progress";
 
@@ -57,16 +58,32 @@ export default function AddReading() {
       return;
     }
 
+    // Якщо активне читання (зупиняємось), перевіряємо, щоб finishPage не була меншою за останню startPage
+    if (isReadingActive && progress.length > 0) {
+      const activeSession = progress[progress.length - 1];
+      const startPage = activeSession?.startPage || 1;
+
+      if (page < startPage) {
+        toast.error(
+          `The finish page can't be less than the start page (${startPage}).`,
+        );
+        return;
+      }
+    }
+
     try {
       setIsLoading(true);
 
       if (!isReadingActive) {
+        // Запит на старт читання
         await startReading({ id: bookId, page });
         toast.success("Reading session started successfully!");
       } else {
+        // Запит на зупинку читання
         await finishReading({ id: bookId, page });
         toast.success("Reading session stopped.");
 
+        // Якщо сторінка співпадає з загальною кількістю — відкриваємо модалку успіху
         if (page === totalPages) {
           setIsSuccessModalOpen(true);
         }

@@ -1,87 +1,95 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
-
-import { getMyLibraryBooks, removeBookFromLibrary } from "@/lib/api";
-
-import Loader from "@/components/Loader/Loader";
+import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { getMyLibraryBooks } from "@/lib/api";
 import { IBook } from "@/types/book";
-import css from "./MyLibraryBooks.module.css";
+import Loader from "@/components/Loader/Loader";
+import css from "./MyReading.module.css";
 
-const options = [
-  { value: "", label: "All books" },
-  { value: "unread", label: "Unread" },
-  { value: "in-progress", label: "In progress" },
-  { value: "done", label: "Done" },
-];
+export default function MyReading() {
+  const searchParams = useSearchParams();
+  const bookIdFromUrl = searchParams.get("id");
 
-export default function MyLibraryBooks() {
-  const queryClient = useQueryClient();
-  const [status, setStatus] = useState<string>("");
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  const {
-    data: books = [],
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["libraryBooks", status],
-    queryFn: () => getMyLibraryBooks(status || undefined),
+  const { data: booksResponse, isLoading: isBooksLoading } = useQuery({
+    queryKey: ["libraryBooks"],
+    queryFn: () => getMyLibraryBooks(),
   });
 
-  // Фільтруємо дублікати за назвою, залишаючи лише першу унікальну книгу
-  const uniqueBooks = books.filter(
-    (book: IBook, index: number, self: IBook[]) =>
-      index ===
-      self.findIndex(
-        (b) => b.title.toLowerCase().trim() === book.title.toLowerCase().trim(),
-      ),
-  );
+  const books: IBook[] = Array.isArray(booksResponse)
+    ? booksResponse
+    : booksResponse?.results || [];
 
-  const { mutate: deleteBook, isPending: isDeleting } = useMutation({
-    mutationFn: (id: string) => removeBookFromLibrary(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["libraryBooks"] });
-      toast.success("Book was successfully deleted from library.");
-    },
-    onError: () => {
-      toast.error("Failed to delete the book. Please try again.");
-    },
-  });
+  // Шукаємо книгу за ID з URL, або активну, або першу
+  const currentBook =
+    books.find((b) => b._id === bookIdFromUrl) ||
+    books.find((b) => b.status === "in-progress") ||
+    books[0];
 
-  const handleDelete = (id: string) => {
-    deleteBook(id);
-  };
+  if (isBooksLoading) {
+    return (
+      <div className={css.wrapper}>
+        <div className={css.headerRow}>
+          <h2 className={css.title}>My reading</h2>
+        </div>
+        <Loader />
+      </div>
+    );
+  }
 
-  // Закриття випадаючого списку при кліку за межами компонента
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  if (!currentBook) {
+    return (
+      <div className={css.wrapper}>
+        <div className={css.headerRow}>
+          <h2 className={css.title}>My reading</h2>
+        </div>
+        <p className={css.noBookText}>No book selected for reading.</p>
+      </div>
+    );
+  }
 
-  const selectedOptionLabel =
-    options.find((opt) => opt.value === status)?.label || "All books";
+  const { title, author, imageUrl, status, timeLeftToRead } = currentBook;
+  const isReadingActive = status === "in-progress";
+
+  // Форматуємо час, що залишився (якщо він є)
+  const timeText = timeLeftToRead
+    ? `${timeLeftToRead.hours} hours and ${timeLeftToRead.minutes} minutes left`
+    : null;
 
   return (
     <div className={css.wrapper}>
       <div className={css.headerWrapper}>
-        <h2 className={css.title}>My library</h2>
-
-        </div>
+        <h2 className={css.title}>My reading</h2>
+        {timeText && <span className={css.timeLeft}>{timeText}</span>}
       </div>
 
+      <div className={css.bookContent}>
+        {imageUrl && (
+          <Image
+            src={imageUrl}
+            alt={title}
+            width={137}
+            height={208}
+            className={css.bookImage}
+            unoptimized
+          />
+        )}
+
+        <h3 className={css.bookTitle} title={title}>
+          {title}
+        </h3>
+        <h4 className={css.bookAuthor} title={author}>
+          {author}
+        </h4>
+
+        <div
+          className={`${css.actionButton} ${isReadingActive ? css.stopActive : ""}`}
+          title={isReadingActive ? "Reading in progress" : "Reading stopped"}
+        >
+          <span className={isReadingActive ? css.stopIcon : css.playIcon} />
+        </div>
+      </div>
+    </div>
   );
 }

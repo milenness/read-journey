@@ -11,6 +11,7 @@ import Progress from "@/components/Progress";
 // import MyBook from "@/components/MyBook";
 
 import css from "@/app/(private)/page.module.css";
+import MyReading from "@/components/MyReading";
 
 export default function ReadingPage() {
   const router = useRouter();
@@ -33,8 +34,8 @@ export default function ReadingPage() {
             <Progress/>
           </Dashboard>
 
-          {/* Тут буде основний блок з інформацією про книгу, станом та статистикою/щоденником */}
-          <div style={{ color: "#fff" }}>MyBook placeholder</div>
+
+         <MyReading/>
         </div>
       </div>
     </section>

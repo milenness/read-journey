@@ -55,13 +55,10 @@ export default function Book({ data, showDeleteBtn, onDelete }: BookProps) {
     },
   });
 
-  const handleStartReading = () => {
-    setIsModalOpen(false);
-    // Перенаправляємо на сторінку читання.
-    // Якщо тобі потрібно передавати ID книги в URL (наприклад /library/reading?id=... або /library/reading/[id]),
-    // зміни шлях нижче відповідно до роутингу, який ви робите:
-    router.push(`/library/reading`);
-  };
+const handleStartReading = () => {
+  setIsModalOpen(false);
+  router.push(`/library/reading?id=${_id}`);
+};
 
   return (
     <>

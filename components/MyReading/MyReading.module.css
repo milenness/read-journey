@@ -22,6 +22,7 @@ flex: 1;
 .headerWrapper {
 display: flex;
 justify-content: space-between;
+align-items: center;
 margin-bottom: 40px;
 }
 
@@ -34,6 +35,7 @@ margin-bottom: 40px;
 @media screen and (min-width: 768px) {
   .headerWrapper {
 margin-bottom: 32px;
+align-items: flex-start;
 }
 
   .title {
@@ -46,4 +48,130 @@ margin-bottom: 32px;
   .headerWrapper {
 margin-bottom: 44px;
 }
+}
+
+.timeLeft {
+  font-size: 12px;
+line-height: 1.33;
+color: var(--color-gray);
+}
+
+@media screen and (min-width: 768px) {
+.timeLeft {
+font-size: 14px;
+line-height: 1.29;
+}
+}
+
+.bookContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
+
+.bookImage {
+  border-radius: 8px;
+width: 137px;
+height: 208px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+@media screen and (min-width: 768px) {
+.bookImage {
+  width: 169px;
+height: 256px;
+  margin-bottom: 25px;
+}
+}
+
+@media screen and (min-width: 1440px) {
+.bookImage {
+  width: 224px;
+height: 340px;
+}
+}
+
+.bookTitle {
+  margin-bottom: 5px;
+}
+
+@media screen and (min-width: 768px) {
+.bookTitle {
+  font-size: 20px;
+line-height: 1;
+  margin-bottom: 4px;
+}
+}
+
+.bookAuthor {
+  font-weight: 500;
+font-size: 10px;
+line-height: 1.2;
+  color: var(--color-gray);
+  margin-bottom: 20px;
+}
+
+@media screen and (min-width: 768px) {
+.bookAuthor {
+  font-size: 14px;
+line-height: 1.29;
+  margin-bottom: 25px;
+}
+}
+
+.actionButton {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: transparent;
+  border: 2px solid var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px;
+}
+
+@media screen and (min-width: 768px) {
+.actionButton {
+  width: 50px;
+  height: 50px;
+}
+}
+
+.playIcon {
+  width: 30px;
+  height: 30px;
+  background-color: var(--color-red);
+  border-radius: 50%;
+}
+
+@media screen and (min-width: 768px) {
+.playIcon {
+  width: 40px;
+  height: 40px;
+}
+}
+
+.stopIcon {
+  width: 15px;
+  height: 15px;
+  background-color: var(--color-red);
+border-radius: 3px;
+}
+
+@media screen and (min-width: 768px) {
+.stopIcon {
+  width: 20px;
+  height: 20px;
+}
+}
+
+.noBookText {
+  color: var(--color-gray);
+  font-size: 14px;
+  text-align: center;
+  margin-top: 40px;
 }

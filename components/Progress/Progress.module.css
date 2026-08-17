@@ -1,9 +1,8 @@
-
 .noProgressBlock {
    padding-bottom: 20px; 
 }
 
-.titleProgress {
+.noProgressTitle {
 font-size: 18px;
 line-height: 1;
 margin-bottom: 14px;
@@ -14,7 +13,7 @@ margin-bottom: 14px;
    padding-bottom: 52px; 
 }
 
- .titleProgress {
+ .noProgressTitle {
 font-size: 20px;
 }
 }
@@ -64,5 +63,75 @@ margin: 0 auto;
 line-height: 1.4;
 padding: 15px 25px;
 width: 100px;
+}
+}
+
+
+.headerRow {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media only screen and (min-width: 768px) {
+.headerRow {
+  margin-bottom: 16px;
+}
+}
+
+.titleProgress {
+  font-size: 18px;
+line-height: 1;
+}
+
+@media only screen and (min-width: 768px) {
+ .titleProgress {
+font-size: 20px;
+}
+}
+
+.tabsIcons {
+  display: flex;
+  gap: 8px;
+}
+
+.iconBtn {
+  display: flex;
+  background-color: transparent;
+color: var(--color-gray);
+padding: 0;
+}
+
+.active {
+  color: var(--color-white);
+}
+
+.diaryContainer {
+  padding: 16px;
+  background-color: var(--color-gray-dark);
+}
+
+.diaryList {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+  position: relative;
+}
+
+.diaryList::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 7px;
+  width: 2px;
+  background-color: var(--color-white);
+  border-radius: 2px;
+}
+
+@media only screen and (min-width: 768px) {
+ .diaryList::before {
+left: 9px;
 }
 }
