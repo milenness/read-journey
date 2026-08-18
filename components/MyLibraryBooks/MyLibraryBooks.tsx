@@ -57,6 +57,7 @@ export default function MyLibraryBooks() {
     deleteBook(id);
   };
 
+  // Закриття дропдауна при кліку за його межами
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
