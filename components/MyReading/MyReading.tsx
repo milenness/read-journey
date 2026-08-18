@@ -70,40 +70,62 @@ export default function MyReading() {
     title,
     author,
     imageUrl,
+    totalPages = 0,
     progress = [],
     timeLeftToRead,
   } = currentBook;
 
-  const totalMinutes = progress.reduce((acc, item) => {
-    if (item.startReading && item.finishReading) {
-      const startTime = new Date(item.startReading).getTime();
-      const finishTime = new Date(item.finishReading).getTime();
-      const mins =
-        !isNaN(startTime) && !isNaN(finishTime)
-          ? Math.round((finishTime - startTime) / (1000 * 60))
-          : 0;
-      return acc + mins;
-    }
-    return acc;
-  }, 0);
+  let leftHours = timeLeftToRead?.hours;
+  let leftMinutes = timeLeftToRead?.minutes;
 
-  const hours = Math.floor(totalMinutes / 60);
-  const minutes = totalMinutes % 60;
+  if (leftHours === undefined || leftMinutes === undefined) {
+    const maxReadPage = progress.reduce((max, p) => {
+      const finish = p.finishPage || 0;
+      return finish > max ? finish : max;
+    }, 0);
 
-  let formattedReadTime = null;
-  if (totalMinutes > 0) {
-    if (hours > 0 && minutes === 0) {
-      formattedReadTime = `${hours} hours read`;
-    } else if (hours === 0 && minutes > 0) {
-      formattedReadTime = `${minutes} minutes read`;
-    } else if (hours > 0 && minutes > 0) {
-      formattedReadTime = `${hours} hours and ${minutes} minutes read`;
-    }
+    const pagesLeft = Math.max(0, totalPages - maxReadPage);
+
+    let totalSpentMinutes = 0;
+    let totalCoveredPages = 0;
+
+    progress.forEach((item) => {
+      if (
+        item.startReading &&
+        item.finishReading &&
+        item.finishPage &&
+        item.startPage
+      ) {
+        const sTime = new Date(item.startReading).getTime();
+        const fTime = new Date(item.finishReading).getTime();
+        const diffMins = (fTime - sTime) / (1000 * 60);
+        const pCount = item.finishPage - item.startPage + 1;
+
+        if (diffMins > 0 && pCount > 0) {
+          totalSpentMinutes += diffMins;
+          totalCoveredPages += pCount;
+        }
+      }
+    });
+
+    const minutesPerPage =
+      totalCoveredPages > 0 ? totalSpentMinutes / totalCoveredPages : 1.5;
+    const estimatedTotalLeftMinutes = Math.round(pagesLeft * minutesPerPage);
+
+    leftHours = Math.floor(estimatedTotalLeftMinutes / 60);
+    leftMinutes = estimatedTotalLeftMinutes % 60;
   }
 
-  const timeText = timeLeftToRead
-    ? `${timeLeftToRead.hours} hours and ${timeLeftToRead.minutes} minutes left`
-    : formattedReadTime;
+  let timeText = null;
+  if (leftHours > 0 && leftMinutes === 0) {
+    timeText = `${leftHours} hours left`;
+  } else if (leftHours === 0 && leftMinutes > 0) {
+    timeText = `${leftMinutes} minutes left`;
+  } else if (leftHours > 0 && leftMinutes > 0) {
+    timeText = `${leftHours} hours and ${leftMinutes} minutes left`;
+  } else {
+    timeText = "0 minutes left";
+  }
 
   const activeSession = progress.find(
     (p) => p.finishPage === undefined || p.finishPage === null,
