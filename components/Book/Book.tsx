@@ -7,7 +7,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { addRecommendedBookById } from "@/lib/api";
 import Modal from "@/components/Modal";
-import Loader from "@/components/Loader/Loader";
+import Loader from "@/components/Loader";
 import css from "./Book.module.css";
 import { IBook } from "@/types/book";
 import { RiDeleteBinLine } from "react-icons/ri";

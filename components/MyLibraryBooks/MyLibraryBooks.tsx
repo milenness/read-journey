@@ -7,8 +7,8 @@ import { HiChevronDown, HiChevronUp } from "react-icons/hi2";
 import toast from "react-hot-toast";
 
 import { getMyLibraryBooks, removeBookFromLibrary } from "@/lib/api";
-import Book from "@/components/Book/Book";
-import Loader from "@/components/Loader/Loader";
+import Book from "@/components/Book";
+import Loader from "@/components/Loader";
 import { IBook } from "@/types/book";
 import css from "./MyLibraryBooks.module.css";
 
@@ -34,7 +34,6 @@ export default function MyLibraryBooks() {
     queryFn: () => getMyLibraryBooks(status || undefined),
   });
 
-  // Фільтруємо дублікати за назвою, залишаючи лише першу унікальну книгу
   const uniqueBooks = books.filter(
     (book: IBook, index: number, self: IBook[]) =>
       index ===
@@ -58,7 +57,6 @@ export default function MyLibraryBooks() {
     deleteBook(id);
   };
 
-  // Закриття випадаючого списку при кліку за межами компонента
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (

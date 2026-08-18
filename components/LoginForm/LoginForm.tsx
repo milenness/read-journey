@@ -14,7 +14,7 @@ import toast from "react-hot-toast";
 
 import { loginUser, SignInRequest } from "@/lib/api";
 import { useAuthStore } from "@/store/authStore";
-import Loader from "@/components/Loader/Loader"; // 👈 Імпортуємо наш лоадер
+import Loader from "@/components/Loader"; 
 import css from "./LoginForm.module.css";
 
 const schema = yup.object().shape({
@@ -31,7 +31,6 @@ const schema = yup.object().shape({
 export default function LoginForm() {
   const router = useRouter();
 
-  // 👈 Дістаємо setAuth замість setUser
   const setAuth = useAuthStore((state) => state.setAuth);
 
   const emailId = useId();
@@ -42,7 +41,6 @@ export default function LoginForm() {
   const mutation = useMutation({
     mutationFn: loginUser,
     onSuccess: (data) => {
-      // 👈 Передаємо юзера ТА його токен у стор
       setAuth({ name: data.name, email: data.email }, data.token);
       router.push("/recommended");
     },

@@ -9,8 +9,21 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { getMyLibraryBooks, deleteReading } from "@/lib/api";
 import { IBook } from "@/types/book";
-import Loader from "@/components/Loader/Loader";
+import Loader from "@/components/Loader";
 import css from "./Progress.module.css";
+
+interface GroupedProgressItem {
+  dateKey: string;
+  dateStr: string;
+  totalDaysPages: number;
+  sessions: Array<{
+    _id?: string;
+    pagesRead: number;
+    itemPercent: string;
+    readingMinutes: number;
+    speed?: number;
+  }>;
+}
 
 export default function Progress() {
   const queryClient = useQueryClient();
@@ -81,7 +94,6 @@ export default function Progress() {
   );
   const percentageNum = totalPages ? (totalReadPages / totalPages) * 100 : 0;
 
-  // Змінено логіку відображення відсотків
   const percentageStr =
     percentageNum === 100
       ? "100"
@@ -89,7 +101,56 @@ export default function Progress() {
         ? "0"
         : percentageNum.toFixed(2);
 
+ 
+  const groupedProgressMap = new Map<string, GroupedProgressItem>();
+
   const sortedProgress = [...progress].reverse();
+
+  sortedProgress.forEach((item) => {
+    const pagesRead = item.finishPage ? item.finishPage - item.startPage : 0;
+    const itemPercent = totalPages
+      ? ((pagesRead / totalPages) * 100).toFixed(1)
+      : "0";
+
+    const dateKey = item.finishReading
+      ? new Date(item.finishReading).toISOString().split("T")[0]
+      : "in-progress";
+
+    const dateStr = item.finishReading
+      ? new Date(item.finishReading).toLocaleDateString("uk-UA")
+      : "In progress";
+
+    let readingMinutes = 0;
+    if (item.startReading && item.finishReading) {
+      const startTime = new Date(item.startReading).getTime();
+      const finishTime = new Date(item.finishReading).getTime();
+      readingMinutes =
+        !isNaN(startTime) && !isNaN(finishTime)
+          ? Math.round((finishTime - startTime) / (1000 * 60))
+          : 0;
+    }
+
+    if (!groupedProgressMap.has(dateKey)) {
+      groupedProgressMap.set(dateKey, {
+        dateKey,
+        dateStr,
+        totalDaysPages: 0,
+        sessions: [],
+      });
+    }
+
+    const group = groupedProgressMap.get(dateKey)!;
+    group.totalDaysPages += pagesRead;
+    group.sessions.push({
+      _id: item._id,
+      pagesRead,
+      itemPercent,
+      readingMinutes,
+      speed: item.speed,
+    });
+  });
+
+  const groupedProgress = Array.from(groupedProgressMap.values());
 
   return (
     <div className={css.progressBlock}>
@@ -120,81 +181,147 @@ export default function Progress() {
       {activeTab === "diary" && (
         <div className={css.diaryContainer}>
           <ul className={css.diaryList}>
-            {sortedProgress.map((item, index) => {
-              const pagesRead = item.finishPage
-                ? item.finishPage - item.startPage
-                : 0;
-              const itemPercent = totalPages
-                ? ((pagesRead / totalPages) * 100).toFixed(1)
-                : "0";
-              const dateStr = item.finishReading
-                ? new Date(item.finishReading).toLocaleDateString("uk-UA")
-                : "In progress";
-              let readingMinutes = 0;
-              if (item.startReading && item.finishReading) {
-                const startTime = new Date(item.startReading).getTime();
-                const finishTime = new Date(item.finishReading).getTime();
-                readingMinutes =
-                  !isNaN(startTime) && !isNaN(finishTime)
-                    ? Math.round((finishTime - startTime) / (1000 * 60))
-                    : 0;
-              }
-              const isActive = index === 0;
+            {groupedProgress.map((group, groupIndex) => {
+              const firstSession = group.sessions[0];
+              const additionalSessions = group.sessions.slice(1);
+              const isActive = groupIndex === 0;
 
               return (
                 <li
-                  key={item._id || index}
+                  key={group.dateKey + groupIndex}
                   className={`${css.diaryItem} ${isActive ? css.active : ""}`}
                 >
                   <div className={css.customPoint}>
                     <div className={css.customSquare}></div>
                   </div>
-                 <div className={css.diaryItemLeft}>
-                    <span className={css.dateText}>{dateStr}</span>
-                    <span className={css.percentText}>{itemPercent}%</span>
-                    <span className={css.minutesText}>
-                      {readingMinutes > 0 ? `${readingMinutes} minutes` : ""}
+
+                  <div className={css.diaryItemLeft}>
+                    <span className={css.dateText}>{group.dateStr}</span>
+                    <span className={css.percentText}>
+                      {firstSession.itemPercent}%
                     </span>
+                    <span className={css.minutesText}>
+                      {firstSession.readingMinutes > 0
+                        ? `${firstSession.readingMinutes} minutes`
+                        : "0 minutes"}
+                    </span>
+
+                    {additionalSessions.map((addSession, addIdx) => (
+                      <div
+                        key={addSession._id || addIdx}
+                        className={css.additionalItemLeft}
+                      >
+                        <span className={css.percentText}>
+                          {addSession.itemPercent}%
+                        </span>
+                        <span className={css.minutesText}>
+                          {addSession.readingMinutes > 0
+                            ? `${addSession.readingMinutes} minutes`
+                            : "0 minutes"}
+                        </span>
+                      </div>
+                    ))}
                   </div>
+
                   <div className={css.diaryItemRight}>
-                    <span className={css.pagesCount}>{pagesRead} pages</span>
-                    <div className={css.speedBinWrapper}>
-                      <div className={css.speedWrapper}>
-                        <svg
-                          className={css.speedSvg}
-                          viewBox="0 0 60 25"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M59.563 1L0.563034 9.42108V25H59.563V1Z"
-                            fill="#30B94D"
-                            fillOpacity="0.2"
-                          />
-                          <rect
-                            width="60"
-                            height="3"
-                            rx="1"
-                            transform="matrix(-0.987181 0.159606 0.159606 0.987181 59.0842 0)"
-                            fill="#30B94D"
-                          />
-                        </svg>
-                        {item.speed && (
-                          <span className={css.speedText}>
-                            {item.speed} pages <br /> per hour
-                          </span>
+                    <span className={css.pagesCount}>
+                      {group.totalDaysPages} pages
+                    </span>
+                    <div className={css.speedBinWrappers}>
+                      <div className={css.speedBinWrapper}>
+                        <div className={css.speedWrapper}>
+                          <svg
+                            className={css.speedSvg}
+                            viewBox="0 0 60 25"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M59.563 1L0.563034 9.42108V25H59.563V1Z"
+                              fill="#30B94D"
+                              fillOpacity="0.2"
+                            />
+                            <rect
+                              width="60"
+                              height="3"
+                              rx="1"
+                              transform="matrix(-0.987181 0.159606 0.159606 0.987181 59.0842 0)"
+                              fill="#30B94D"
+                            />
+                          </svg>
+                          {firstSession.speed && (
+                            <span className={css.speedText}>
+                              {firstSession.speed} pages <br /> per hour
+                            </span>
+                          )}
+                        </div>
+                        {firstSession._id && (
+                          <button
+                            type="button"
+                            className={css.deleteReadingBtn}
+                            onClick={() =>
+                              handleDeleteReading(firstSession._id!)
+                            }
+                            aria-label="Delete reading session"
+                          >
+                            <RiDeleteBinLine
+                              className={css.binIcon}
+                              size={14}
+                            />
+                          </button>
                         )}
                       </div>
-                      {item._id && (
-                        <button
-                          type="button"
-                          className={css.deleteReadingBtn}
-                          onClick={() => handleDeleteReading(item._id!)}
-                          aria-label="Delete reading session"
+
+                      {additionalSessions.map((addSession, addIdx) => (
+                        <div
+                          key={addSession._id || addIdx}
+                          className={css.additionalInfo}
                         >
-                          <RiDeleteBinLine className={css.binIcon} size={14} />
-                        </button>
-                      )}
+                          <div className={css.speedBinWrapper}>
+                            <div className={css.speedWrapper}>
+                              <svg
+                                className={css.speedSvg}
+                                viewBox="0 0 60 25"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M59.563 1L0.563034 9.42108V25H59.563V1Z"
+                                  fill="#30B94D"
+                                  fillOpacity="0.2"
+                                />
+                                <rect
+                                  width="60"
+                                  height="3"
+                                  rx="1"
+                                  transform="matrix(-0.987181 0.159606 0.159606 0.987181 59.0842 0)"
+                                  fill="#30B94D"
+                                />
+                              </svg>
+                              {addSession.speed && (
+                                <span className={css.speedText}>
+                                  {addSession.speed} pages <br /> per hour
+                                </span>
+                              )}
+                            </div>
+                            {addSession._id && (
+                              <button
+                                type="button"
+                                className={css.deleteReadingBtn}
+                                onClick={() =>
+                                  handleDeleteReading(addSession._id!)
+                                }
+                                aria-label="Delete reading session"
+                              >
+                                <RiDeleteBinLine
+                                  className={css.binIcon}
+                                  size={14}
+                                />
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </li>
@@ -220,7 +347,6 @@ export default function Progress() {
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                {/* Сіре фонове кільце */}
                 <circle
                   cx="58"
                   cy="58"
@@ -229,8 +355,6 @@ export default function Progress() {
                   strokeWidth="10"
                   fill="none"
                 />
-
-                {/* Зелений повзунок із закругленими кінцями */}
                 <circle
                   cx="58"
                   cy="58"

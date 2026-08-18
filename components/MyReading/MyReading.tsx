@@ -6,14 +6,13 @@ import { useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { getMyLibraryBooks } from "@/lib/api";
 import { IBook } from "@/types/book";
-import Loader from "@/components/Loader/Loader";
+import Loader from "@/components/Loader";
 import css from "./MyReading.module.css";
 
 export default function MyReading() {
   const searchParams = useSearchParams();
   const bookIdFromUrl = searchParams.get("id");
 
-  // Отримуємо список книг з бібліотеки
   const { data: booksResponse, isLoading: isBooksLoading } = useQuery({
     queryKey: ["libraryBooks"],
     queryFn: () => getMyLibraryBooks(),
@@ -57,7 +56,6 @@ export default function MyReading() {
     timeLeftToRead,
   } = currentBook;
 
-  // 🎯 Визначаємо активність так само надійно, як і у формі (за наявністю незавершеного сеансу)
   const activeSession = progress.find(
     (p) => p.finishPage === undefined || p.finishPage === null,
   );
@@ -67,7 +65,6 @@ export default function MyReading() {
     ? `${timeLeftToRead.hours} hours and ${timeLeftToRead.minutes} minutes left`
     : null;
 
-  // При кліку на круглу кнопку сабмітимо форму зліва
   const handleActionClick = () => {
     const pageInput = document.querySelector(
       'input[name="page"]',
@@ -116,7 +113,6 @@ export default function MyReading() {
           {author}
         </h4>
 
-        {/* Кнопка тепер миттєво змінює стан залежно від наявності активної сесії */}
         <div
           onClick={handleActionClick}
           className={`${css.actionButton} ${isReadingActive ? css.stopActive : ""}`}

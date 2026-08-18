@@ -123,8 +123,6 @@ export default function RegisterForm() {
                   <span className={css.successText}>Name is valid</span>
                 )}
               </div>
-
-              {/* Поле Mail */}
               <div className={css.errorWrapper}>
                 <div
                   className={`${css.inputWrapper} ${
@@ -166,8 +164,6 @@ export default function RegisterForm() {
                   <span className={css.successText}>Email is correct</span>
                 )}
               </div>
-
-              {/* Поле Password */}
               <div className={css.errorWrapper}>
                 <div
                   className={`${css.inputWrapper} ${

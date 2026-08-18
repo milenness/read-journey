@@ -7,8 +7,8 @@ import {
   addRecommendedBookById,
   getMyLibraryBooks,
 } from "@/lib/api";
-import Modal from "@/components/Modal/Modal";
-import Loader from "@/components/Loader/Loader";
+import Modal from "@/components/Modal";
+import Loader from "@/components/Loader";
 import css from "./AddBook.module.css";
 import { useQueryClient } from "@tanstack/react-query";
 import { IBook } from "@/types/book";
@@ -82,7 +82,6 @@ export default function AddBook() {
         return;
       }
 
-      // Перевіряємо дублікати через сувору нормалізацію назв та ID
       const response = await getMyLibraryBooks();
       const currentBooks = Array.isArray(response)
         ? response

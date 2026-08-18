@@ -11,7 +11,7 @@ import { TbAlignJustified } from "react-icons/tb";
 
 import { useAuthStore } from "@/store/authStore";
 import { logoutUser } from "@/lib/api";
-import Loader from "@/components/Loader/Loader";
+import Loader from "@/components/Loader";
 import css from "./Header.module.css";
 import MobileMenu from "@/components/MobileMenu";
 

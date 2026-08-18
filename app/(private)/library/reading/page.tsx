@@ -5,10 +5,8 @@ import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
 
 import Dashboard from "@/components/Dashboard";
-// Поки що ці компоненти ми створимо на наступних кроках:
 import AddReading from "@/components/AddReading";
 import Progress from "@/components/Progress";
-// import MyBook from "@/components/MyBook";
 
 import css from "@/app/(private)/page.module.css";
 import MyReading from "@/components/MyReading";

@@ -7,7 +7,7 @@ import { FaArrowRight } from "react-icons/fa6";
 
 import { getRecommendedBooks } from "@/lib/api";
 import StartBook from "./StartBook";
-import Loader from "@/components/Loader/Loader";
+import Loader from "@/components/Loader";
 import css from "./StartRecommended.module.css";
 
 export default function StartRecommended() {
