@@ -95,17 +95,19 @@ export default function MyReading() {
       </div>
 
       <div className={css.bookContent}>
-        {imageUrl && (
-          <Image
-            src={imageUrl}
-            alt={title}
-            width={137}
-            height={208}
-            loading="eager"
-            className={css.bookImage}
-            unoptimized
-          />
-        )}
+        <div className={css.bookImageWrapper}>
+          {imageUrl && imageUrl.trim() !== "" && (
+            <Image
+              src={imageUrl}
+              alt={title}
+              width={137}
+              height={208}
+              loading="eager"
+              className={css.bookImage}
+              unoptimized
+            />
+          )}
+        </div>
 
         <h3 className={css.bookTitle} title={title}>
           {title}

@@ -80,9 +80,15 @@ export default function Progress() {
     0,
   );
   const percentageNum = totalPages ? (totalReadPages / totalPages) * 100 : 0;
-  const percentageStr = percentageNum.toFixed(
-    percentageNum < 10 && percentageNum > 0 ? 2 : 0,
-  );
+
+  // Змінено логіку відображення відсотків
+  const percentageStr =
+    percentageNum === 100
+      ? "100"
+      : percentageNum === 0
+        ? "0"
+        : percentageNum.toFixed(2);
+
   const sortedProgress = [...progress].reverse();
 
   return (
@@ -143,7 +149,7 @@ export default function Progress() {
                   <div className={css.customPoint}>
                     <div className={css.customSquare}></div>
                   </div>
-                  <div className={css.diaryItemLeft}>
+                 <div className={css.diaryItemLeft}>
                     <span className={css.dateText}>{dateStr}</span>
                     <span className={css.percentText}>{itemPercent}%</span>
                     <span className={css.minutesText}>

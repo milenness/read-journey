@@ -47,16 +47,19 @@ export default function StartBook({ data }: StartBookProps) {
   return (
     <>
       <li className={css.startItem} onClick={() => setIsModalOpen(true)}>
-        <Image
-          src={imageUrl}
-          alt={`Cover of the book ${title}`}
-          width={71}
-          height={107}
-          className={css.bookImage}
-          loading="eager"
-          unoptimized
-          style={{ width: "auto" }}
-        />
+        <div className={css.bookImageWrapper}>
+          {imageUrl && imageUrl.trim() !== "" && (
+            <Image
+              src={imageUrl}
+              alt={`Cover of the book ${title}`}
+              width={71}
+              height={107}
+              className={css.bookImage}
+              loading="eager"
+              unoptimized
+            />
+          )}
+        </div>
         <h4 className={css.bookTitle} title={formattedTitle}>
           {formattedTitle}
         </h4>
@@ -66,14 +69,18 @@ export default function StartBook({ data }: StartBookProps) {
       </li>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <Image
-          src={imageUrl}
-          alt={title}
-          width={137}
-          height={208}
-          className={css.modalImage}
-          unoptimized
-        />
+        <div className={css.modalImageWrapper}>
+          {imageUrl && imageUrl.trim() !== "" && (
+            <Image
+              src={imageUrl}
+              alt={title}
+              width={137}
+              height={208}
+              className={css.modalImage}
+              unoptimized
+            />
+          )}
+        </div>
         <h2 className={css.modalTitle} title={formattedTitle}>
           {formattedTitle}
         </h2>

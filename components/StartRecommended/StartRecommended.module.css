@@ -50,12 +50,45 @@ margin-bottom: 14px;
   max-width: 71px;
 }
 
-.bookImage {
+.bookImageWrapper,
+.modalImageWrapper {
+  background-color: var(--color-gray-dark);
+  background-image: url('/images/default.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
   border-radius: 8px;
-margin-bottom: 8px;
-height: 107px;
-object-fit: cover;
-  object-position: center;
+  overflow: hidden;
+  flex-shrink: 0;
+  display: block;
+}
+
+.bookImageWrapper {
+  width: 71px;
+  height: 107px;
+  margin-bottom: 8px;
+}
+
+.modalImageWrapper {
+  width: 140px;
+  height: 213px;
+  margin: 0 auto 16px auto;
+}
+
+@media only screen and (min-width: 768px) {
+  .modalImageWrapper {
+    width: 153px;
+    height: 233px;
+    margin-bottom: 16px;
+  }
+}
+
+.bookImage,
+.modalImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .bookTitle{
@@ -102,19 +135,6 @@ transition: color var(--main-transition);
 .arrow {
  width: 24px;
  height: 24px;
-}
-}
-
-.modalImage {
-  border-radius: 8px;
-  width: 140px;
-  margin-bottom: 16px;
-  object-fit: cover;
-}
-
-@media only screen and (min-width: 768px) {
-  .modalImage {
-  width: 153px;
 }
 }
 

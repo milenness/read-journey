@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation"; // 👈 Імпортуємо роутер
+import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { addRecommendedBookById } from "@/lib/api";
@@ -36,13 +36,12 @@ const formatTitle = (text: string) => {
 export default function Book({ data, showDeleteBtn, onDelete }: BookProps) {
   const { _id, title, author, imageUrl, totalPages } = data;
   const queryClient = useQueryClient();
-  const router = useRouter(); // 👈 Ініціалізуємо роутер
+  const router = useRouter();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const formattedTitle = formatTitle(title);
 
-  // Мутація для додавання (використовується, якщо книга з рекомендацій)
   const { mutate: addToLibrary, isPending: isAdding } = useMutation({
     mutationFn: () => addRecommendedBookById(_id),
     onSuccess: () => {
@@ -55,22 +54,27 @@ export default function Book({ data, showDeleteBtn, onDelete }: BookProps) {
     },
   });
 
-const handleStartReading = () => {
-  setIsModalOpen(false);
-  router.push(`/library/reading?id=${_id}`);
-};
+  const handleStartReading = () => {
+    setIsModalOpen(false);
+    router.push(`/library/reading?id=${_id}`);
+  };
 
   return (
     <>
       <li className={css.book} onClick={() => setIsModalOpen(true)}>
-        <Image
-          src={imageUrl}
-          alt={`Cover of the book ${title}`}
-          width={137}
-          height={208}
-          className={css.bookImage}
-          unoptimized
-        />
+        <div className={css.bookImageWrapper}>
+          {imageUrl && imageUrl.trim() !== "" && (
+            <Image
+              src={imageUrl}
+              alt={`Cover of the book ${title}`}
+              width={137}
+              height={208}
+              className={css.bookImage}
+              unoptimized
+            />
+          )}
+        </div>
+
         <div className={css.infoContainer}>
           <div className={css.bookInfo}>
             <h4 className={css.bookTitle} title={formattedTitle}>
@@ -97,14 +101,19 @@ const handleStartReading = () => {
       </li>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <Image
-          src={imageUrl}
-          alt={title}
-          width={137}
-          height={208}
-          className={css.modalImage}
-          unoptimized
-        />
+        <div className={css.modalImageWrapper}>
+          {imageUrl && imageUrl.trim() !== "" && (
+            <Image
+              src={imageUrl}
+              alt={title}
+              width={137}
+              height={208}
+              className={css.modalImage}
+              unoptimized
+            />
+          )}
+        </div>
+
         <h2 className={css.modalTitle} title={formattedTitle}>
           {formattedTitle}
         </h2>
