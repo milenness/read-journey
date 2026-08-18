@@ -25,6 +25,17 @@ interface GroupedProgressItem {
   }>;
 }
 
+const formatNumber = (num: number | undefined): string => {
+  if (num === undefined || num === null) return "";
+  if (num >= 1_000_000) {
+    return Math.round(num / 1_000_000) + "M";
+  }
+  if (num >= 1_000) {
+    return Math.round(num / 1_000) + "K";
+  }
+  return Math.round(num).toString();
+};
+
 export default function Progress() {
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
@@ -89,7 +100,7 @@ export default function Progress() {
 
   const totalReadPages = progress.reduce(
     (acc, item) =>
-      acc + (item.finishPage ? item.finishPage - item.startPage : 0),
+      acc + (item.finishPage ? item.finishPage - item.startPage + 1 : 0),
     0,
   );
   const percentageNum = totalPages ? (totalReadPages / totalPages) * 100 : 0;
@@ -101,13 +112,13 @@ export default function Progress() {
         ? "0"
         : percentageNum.toFixed(2);
 
- 
   const groupedProgressMap = new Map<string, GroupedProgressItem>();
-
   const sortedProgress = [...progress].reverse();
 
   sortedProgress.forEach((item) => {
-    const pagesRead = item.finishPage ? item.finishPage - item.startPage : 0;
+    const pagesRead = item.finishPage
+      ? item.finishPage - item.startPage + 1
+      : 0;
     const itemPercent = totalPages
       ? ((pagesRead / totalPages) * 100).toFixed(1)
       : "0";
@@ -249,9 +260,10 @@ export default function Progress() {
                               fill="#30B94D"
                             />
                           </svg>
-                          {firstSession.speed && (
+                          {firstSession.speed !== undefined && (
                             <span className={css.speedText}>
-                              {firstSession.speed} pages <br /> per hour
+                              {formatNumber(firstSession.speed)} pages <br />{" "}
+                              per hour
                             </span>
                           )}
                         </div>
@@ -298,9 +310,10 @@ export default function Progress() {
                                   fill="#30B94D"
                                 />
                               </svg>
-                              {addSession.speed && (
+                              {addSession.speed !== undefined && (
                                 <span className={css.speedText}>
-                                  {addSession.speed} pages <br /> per hour
+                                  {formatNumber(addSession.speed)} pages <br />{" "}
+                                  per hour
                                 </span>
                               )}
                             </div>

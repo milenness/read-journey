@@ -248,8 +248,21 @@ height: 373px;
 }
 
 .additionalItemLeft {
+  margin-top: 31px;
+}
+
+@media only screen and (min-width: 768px) {
+.additionalItemLeft {
+  margin-top: 34px;
+}
+}
+
+@media only screen and (min-width: 1440px) {
+.additionalItemLeft {
   margin-top: 45px;
 }
+}
+
 
 .dateText {
   font-weight: 700;
@@ -547,5 +560,17 @@ line-height: 1.17;
 }
 
 .additionalInfo {
+  margin-top: 16px;
+}
+
+@media only screen and (min-width: 768px) {
+.additionalInfo {
+  margin-top: 14px;
+}
+}
+
+@media only screen and (min-width: 1440px) {
+.additionalInfo {
   margin-top: 28px;
+}
 }

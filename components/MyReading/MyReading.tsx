@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
@@ -12,6 +13,23 @@ import css from "./MyReading.module.css";
 export default function MyReading() {
   const searchParams = useSearchParams();
   const bookIdFromUrl = searchParams.get("id");
+
+  const [activeTab, setActiveTab] = useState<"diary" | "statistics">("diary");
+
+  useEffect(() => {
+    const handleTabClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const btn = target.closest("button");
+      if (!btn) return;
+
+      const title = btn.getAttribute("title");
+      if (title === "Diary") setActiveTab("diary");
+      if (title === "Statistics") setActiveTab("statistics");
+    };
+
+    document.addEventListener("click", handleTabClick);
+    return () => document.removeEventListener("click", handleTabClick);
+  }, []);
 
   const { data: booksResponse, isLoading: isBooksLoading } = useQuery({
     queryKey: ["libraryBooks"],
@@ -56,14 +74,41 @@ export default function MyReading() {
     timeLeftToRead,
   } = currentBook;
 
+  const totalMinutes = progress.reduce((acc, item) => {
+    if (item.startReading && item.finishReading) {
+      const startTime = new Date(item.startReading).getTime();
+      const finishTime = new Date(item.finishReading).getTime();
+      const mins =
+        !isNaN(startTime) && !isNaN(finishTime)
+          ? Math.round((finishTime - startTime) / (1000 * 60))
+          : 0;
+      return acc + mins;
+    }
+    return acc;
+  }, 0);
+
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+
+  let formattedReadTime = null;
+  if (totalMinutes > 0) {
+    if (hours > 0 && minutes === 0) {
+      formattedReadTime = `${hours} hours read`;
+    } else if (hours === 0 && minutes > 0) {
+      formattedReadTime = `${minutes} minutes read`;
+    } else if (hours > 0 && minutes > 0) {
+      formattedReadTime = `${hours} hours and ${minutes} minutes read`;
+    }
+  }
+
+  const timeText = timeLeftToRead
+    ? `${timeLeftToRead.hours} hours and ${timeLeftToRead.minutes} minutes left`
+    : formattedReadTime;
+
   const activeSession = progress.find(
     (p) => p.finishPage === undefined || p.finishPage === null,
   );
   const isReadingActive = Boolean(activeSession);
-
-  const timeText = timeLeftToRead
-    ? `${timeLeftToRead.hours} hours and ${timeLeftToRead.minutes} minutes left`
-    : null;
 
   const handleActionClick = () => {
     const pageInput = document.querySelector(
@@ -88,7 +133,10 @@ export default function MyReading() {
     <div className={css.wrapper}>
       <div className={css.headerWrapper}>
         <h2 className={css.title}>My reading</h2>
-        {timeText && <span className={css.timeLeft}>{timeText}</span>}
+
+        {activeTab === "statistics" && timeText && (
+          <span className={css.timeLeft}>{timeText}</span>
+        )}
       </div>
 
       <div className={css.bookContent}>

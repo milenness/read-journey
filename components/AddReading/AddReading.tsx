@@ -143,8 +143,8 @@ export default function AddReading() {
         isOpen={isSuccessModalOpen}
         onClose={() => setIsSuccessModalOpen(false)}
       >
-        <span role="img" aria-label="Like" className={css.likeImg}>
-          🏆
+        <span role="img" aria-label="Books" className={css.likeImg}>
+          📚
         </span>
         <h2 className={css.modalTitle}>The book is read</h2>
         <p className={css.modalText}>
