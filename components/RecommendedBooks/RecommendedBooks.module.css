@@ -69,6 +69,7 @@ background-color: transparent;
 .pageBtn:disabled .arrow {
   color: rgba(249, 249, 249, 0.2);
 }
+
 .booksList {
   display: flex;
   flex-wrap: wrap;
@@ -86,6 +87,11 @@ background-color: transparent;
   column-gap: 20px;
   row-gap: 27px;
 }
+
+.booksList > * {
+    flex-basis: calc((100% - (20px * 4)) / 5); 
+    max-width: calc((100% - (20px * 4)) / 5);
+  }
 }
 
 .errorStub {

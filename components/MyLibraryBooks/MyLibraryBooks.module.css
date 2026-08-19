@@ -60,6 +60,11 @@ margin-bottom: 14px;
   column-gap: 20px;
   row-gap: 27px;
 }
+
+.booksList > * {
+    flex-basis: calc((100% - (20px * 4)) / 5); 
+    max-width: calc((100% - (20px * 4)) / 5);
+  }
 }
 
 .noBlock {

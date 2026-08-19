@@ -14,7 +14,7 @@ import css from "./MyLibraryBooks.module.css";
 
 const options = [
   { value: "", label: "All books" },
-  { value: "unread", label: "Unread" },
+  { value: "unread", label: "Unread" }, 
   { value: "in-progress", label: "In progress" },
   { value: "done", label: "Done" },
 ];
@@ -42,19 +42,33 @@ export default function MyLibraryBooks() {
       ),
   );
 
-  const { mutate: deleteBook, isPending: isDeleting } = useMutation({
+  const { mutateAsync: deleteBookAsync, isPending: isDeleting } = useMutation({
     mutationFn: (id: string) => removeBookFromLibrary(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["libraryBooks"] });
-      toast.success("Book was successfully deleted from library.");
     },
     onError: () => {
       toast.error("Failed to delete the book. Please try again.");
     },
   });
 
-  const handleDelete = (id: string) => {
-    deleteBook(id);
+  // Видаляємо всі дублікати цієї книги за назвою з бази
+  const handleDeleteByTitle = async (bookTitle: string) => {
+    try {
+      const booksWithSameTitle = books.filter(
+        (b: IBook) =>
+          b.title.toLowerCase().trim() === bookTitle.toLowerCase().trim(),
+      );
+
+      // Видаляємо кожен знайдений дублікат послідовно
+      for (const book of booksWithSameTitle) {
+        await deleteBookAsync(book._id);
+      }
+
+      toast.success("Book was successfully deleted from library.");
+    } catch {
+      // Помилка вже оброблена в onError мутації
+    }
   };
 
   // Закриття дропдауна при кліку за його межами
@@ -93,9 +107,9 @@ export default function MyLibraryBooks() {
 
           {isOpen && (
             <ul className={css.dropdownList}>
-              {options.map((option) => (
+              {options.map((option, idx) => (
                 <li
-                  key={option.value}
+                  key={idx}
                   className={`${css.dropdownItem} ${
                     status === option.value ? css.active : ""
                   }`}
@@ -130,7 +144,7 @@ export default function MyLibraryBooks() {
               key={book._id}
               data={book}
               showDeleteBtn={true}
-              onDelete={handleDelete}
+              onDelete={() => handleDeleteByTitle(book.title)}
             />
           ))}
         </ul>

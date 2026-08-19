@@ -2,9 +2,13 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { addRecommendedBookById } from "@/lib/api";
+import {
+  addRecommendedBookById,
+  removeBookFromLibrary,
+  getMyLibraryBooks,
+} from "@/lib/api";
 import Modal from "@/components/Modal";
 import Loader from "@/components/Loader";
 import css from "./StartRecommended.module.css";
@@ -32,6 +36,27 @@ export default function StartBook({ data }: StartBookProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const formattedTitle = formatTitle(title);
 
+  // Отримуємо список книг бібліотеки для перевірки, чи книга вже додана
+  const { data: libraryBooksResponse } = useQuery({
+    queryKey: ["libraryBooks"],
+    queryFn: () => getMyLibraryBooks(),
+  });
+
+  const libraryBooks: IBook[] = Array.isArray(libraryBooksResponse)
+    ? libraryBooksResponse
+    : libraryBooksResponse?.results || [];
+
+  // Шукаємо, чи є книга в бібліотеці (за _id або назвою)
+  const existingBookInLibrary = libraryBooks.find(
+    (b) =>
+      b._id === _id ||
+      b.title.toLowerCase().trim() === title.toLowerCase().trim(),
+  );
+
+  const libraryBookId = existingBookInLibrary?._id || _id;
+  const isAlreadyInLibrary = Boolean(existingBookInLibrary);
+
+  // Мутація для додавання
   const { mutate: addToLibrary, isPending: isAdding } = useMutation({
     mutationFn: () => addRecommendedBookById(_id),
     onSuccess: () => {
@@ -41,6 +66,19 @@ export default function StartBook({ data }: StartBookProps) {
     },
     onError: () => {
       toast.error("Failed to add the book or it is already in your library.");
+    },
+  });
+
+  // Мутація для видалення (якщо вже в бібліотеці)
+  const { mutate: deleteBook, isPending: isDeleting } = useMutation({
+    mutationFn: (id: string) => removeBookFromLibrary(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["libraryBooks"] });
+      toast.success("Book was successfully removed from your library.");
+      setIsModalOpen(false);
+    },
+    onError: () => {
+      toast.error("Failed to remove the book. Please try again.");
     },
   });
 
@@ -88,14 +126,27 @@ export default function StartBook({ data }: StartBookProps) {
           {author}
         </h3>
         <span className={css.modalPages}>{totalPages} pages</span>
-        <button
-          className={css.addButton}
-          type="button"
-          onClick={() => addToLibrary()}
-          disabled={isAdding}
-        >
-          {isAdding ? <Loader /> : "Add to library"}
-        </button>
+
+        {/* Динамічна кнопка залежно від того, чи є книга в бібліотеці */}
+        {isAlreadyInLibrary ? (
+          <button
+            className={css.addButton}
+            type="button"
+            onClick={() => deleteBook(libraryBookId)}
+            disabled={isDeleting}
+          >
+            {isDeleting ? <Loader /> : "Remove from library"}
+          </button>
+        ) : (
+          <button
+            className={css.addButton}
+            type="button"
+            onClick={() => addToLibrary()}
+            disabled={isAdding}
+          >
+            {isAdding ? <Loader /> : "Add to library"}
+          </button>
+        )}
       </Modal>
     </>
   );

@@ -1,5 +1,5 @@
 .screenBlock {
-  padding-top: 20px;
+  padding: 20px 40px 0 40px;
   display: flex;
   justify-content: center;
   border-radius: 30px;
@@ -20,7 +20,7 @@
 @media only screen and (min-width: 1440px) {
   .screenBlock {
     display: flex;
-    padding-top: 80px;
+    padding: 80px 98px 0 98px;
    width: calc(50%);
   }
 

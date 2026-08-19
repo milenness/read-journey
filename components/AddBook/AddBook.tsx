@@ -2,16 +2,12 @@
 
 import { useId, useState } from "react";
 import toast from "react-hot-toast";
-import {
-  getRecommendedBooks,
-  addRecommendedBookById,
-  getMyLibraryBooks,
-} from "@/lib/api";
+import { AxiosError } from "axios";
+import { addBookToLibrary } from "@/lib/api";
 import Modal from "@/components/Modal";
 import Loader from "@/components/Loader";
 import css from "./AddBook.module.css";
 import { useQueryClient } from "@tanstack/react-query";
-import { IBook } from "@/types/book";
 
 export default function AddBook() {
   const titleId = useId();
@@ -33,14 +29,12 @@ export default function AddBook() {
     const pagesStr = formData.get("pages")?.toString().trim() || "";
     const pages = pagesStr ? Number(pagesStr) : undefined;
 
-    if (!title && !author && !pages) {
-      toast.error(
-        "Please fill in at least one field to search and add a book.",
-      );
+    if (!title || !author || !pages) {
+      toast.error("Please fill in all fields to add a book.");
       return;
     }
 
-    if (pages !== undefined && (pages <= 0 || pages > 10000)) {
+    if (pages <= 0 || pages > 10000) {
       toast.error("Number of pages must be between 1 and 10000.");
       return;
     }
@@ -48,75 +42,23 @@ export default function AddBook() {
     try {
       setIsLoading(true);
 
-      const searchResult = await getRecommendedBooks({
-        title: title || undefined,
-        author: author || undefined,
-        limit: 50,
+      // Відправляємо напряму на бекенд на /books/add згідно з ТЗ та Swagger
+      await addBookToLibrary({
+        title,
+        author,
+        totalPages: pages,
       });
-
-      const booksList = searchResult?.results || [];
-
-      if (booksList.length === 0) {
-        toast.error("Sorry, no books found matching your query.");
-        setIsLoading(false);
-        return;
-      }
-
-      const foundBook = booksList.find((book) => {
-        const matchTitle = title
-          ? book.title.toLowerCase().includes(title.toLowerCase())
-          : true;
-        const matchAuthor = author
-          ? book.author.toLowerCase().includes(author.toLowerCase())
-          : true;
-        const matchPages = pages ? book.totalPages === pages : true;
-
-        return matchTitle && matchAuthor && matchPages;
-      });
-
-      if (!foundBook) {
-        toast.error(
-          "No exact match found in recommendations. Please check the spelling.",
-        );
-        setIsLoading(false);
-        return;
-      }
-
-      const response = await getMyLibraryBooks();
-      const currentBooks = Array.isArray(response)
-        ? response
-        : response.results || [];
-
-      const normalizedFoundTitle = foundBook.title
-        .toLowerCase()
-        .replace(/\s+/g, " ")
-        .trim();
-
-      const isAlreadyInLibrary = currentBooks.some((b: IBook) => {
-        const normalizedExistingTitle = b.title
-          .toLowerCase()
-          .replace(/\s+/g, " ")
-          .trim();
-        return (
-          b._id === foundBook._id ||
-          normalizedExistingTitle === normalizedFoundTitle
-        );
-      });
-
-      if (isAlreadyInLibrary) {
-        toast.error("This book is already in your library!");
-        setIsLoading(false);
-        return;
-      }
-
-      await addRecommendedBookById(foundBook._id);
 
       queryClient.invalidateQueries({ queryKey: ["libraryBooks"] });
 
       setIsSuccessModalOpen(true);
       form.reset();
     } catch (error) {
-      toast.error("Oops! Something went wrong while adding the book.");
+      const err = error as AxiosError<{ message?: string }>;
+      const errorMessage =
+        err.response?.data?.message ||
+        "Oops! Something went wrong while adding the book.";
+      toast.error(errorMessage);
       console.error(error);
     } finally {
       setIsLoading(false);
@@ -140,6 +82,7 @@ export default function AddBook() {
               placeholder="Enter text"
               className={css.input}
               maxLength={100}
+              required
             />
           </div>
 
@@ -154,6 +97,7 @@ export default function AddBook() {
               placeholder="Enter text"
               className={css.input}
               maxLength={100}
+              required
             />
           </div>
 
@@ -169,6 +113,7 @@ export default function AddBook() {
               max="10000"
               placeholder="Enter number"
               className={css.input}
+              required
             />
           </div>
 

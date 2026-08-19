@@ -3,9 +3,13 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { addRecommendedBookById } from "@/lib/api";
+import {
+  addRecommendedBookById,
+  removeBookFromLibrary,
+  getMyLibraryBooks,
+} from "@/lib/api";
 import Modal from "@/components/Modal";
 import Loader from "@/components/Loader";
 import css from "./Book.module.css";
@@ -42,6 +46,27 @@ export default function Book({ data, showDeleteBtn, onDelete }: BookProps) {
 
   const formattedTitle = formatTitle(title);
 
+  // Отримуємо список книг користувача з кешу або через запит, щоб перевірити, чи книга вже додана
+  const { data: libraryBooksResponse } = useQuery({
+    queryKey: ["libraryBooks"],
+    queryFn: () => getMyLibraryBooks(),
+  });
+
+  const libraryBooks: IBook[] = Array.isArray(libraryBooksResponse)
+    ? libraryBooksResponse
+    : libraryBooksResponse?.results || [];
+
+  // Шукаємо, чи є ця книга в бібліотеці користувача (за ід або за назвою)
+  const existingBookInLibrary = libraryBooks.find(
+    (b) =>
+      b._id === _id ||
+      b.title.toLowerCase().trim() === title.toLowerCase().trim(),
+  );
+
+  const libraryBookId = existingBookInLibrary?._id || _id;
+  const isAlreadyInLibrary = Boolean(existingBookInLibrary);
+
+  // Мутація для додавання
   const { mutate: addToLibrary, isPending: isAdding } = useMutation({
     mutationFn: () => addRecommendedBookById(_id),
     onSuccess: () => {
@@ -54,9 +79,22 @@ export default function Book({ data, showDeleteBtn, onDelete }: BookProps) {
     },
   });
 
+  // Мутація для видалення (якщо вона вже в бібліотеці)
+  const { mutate: deleteBook, isPending: isDeleting } = useMutation({
+    mutationFn: (id: string) => removeBookFromLibrary(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["libraryBooks"] });
+      toast.success("Book was successfully removed from your library.");
+      setIsModalOpen(false);
+    },
+    onError: () => {
+      toast.error("Failed to remove the book. Please try again.");
+    },
+  });
+
   const handleStartReading = () => {
     setIsModalOpen(false);
-    router.push(`/library/reading?id=${_id}`);
+    router.push(`/library/reading?id=${libraryBookId}`);
   };
 
   return (
@@ -71,6 +109,7 @@ export default function Book({ data, showDeleteBtn, onDelete }: BookProps) {
               height={208}
               className={css.bookImage}
               unoptimized
+              loading="eager"
             />
           )}
         </div>
@@ -110,6 +149,7 @@ export default function Book({ data, showDeleteBtn, onDelete }: BookProps) {
               height={208}
               className={css.modalImage}
               unoptimized
+              loading="eager"
             />
           )}
         </div>
@@ -123,6 +163,7 @@ export default function Book({ data, showDeleteBtn, onDelete }: BookProps) {
 
         <span className={css.modalPages}>{totalPages} pages</span>
 
+        {/* Логіка кнопок залежить від того, чи книга вже в бібліотеці */}
         {showDeleteBtn ? (
           <button
             className={css.addButton}
@@ -130,6 +171,15 @@ export default function Book({ data, showDeleteBtn, onDelete }: BookProps) {
             onClick={handleStartReading}
           >
             Start reading
+          </button>
+        ) : isAlreadyInLibrary ? (
+          <button
+            className={css.addButton}
+            type="button"
+            onClick={() => deleteBook(libraryBookId)}
+            disabled={isDeleting}
+          >
+            {isDeleting ? <Loader /> : "Remove from library"}
           </button>
         ) : (
           <button
